@@ -1,26 +1,54 @@
-type validation = {
-  pattern: string,
+interface TextField {
+  label: string
+  htmlForId: string
+  textType?: textType
+  disabled?: boolean
+  validation?: validation
+}
+
+export type validation = {
+  pattern?: string
   error: string
 }
 
-const BaseTextField = ({
+export const TextTypeList = {
+  TEXT: "text",
+  EMAIL: "email",
+  PASSWORD: "password",
+} as const
+export type textType = (typeof TextTypeList)[keyof typeof TextTypeList]
+
+export const BaseTextField = ({
   label,
-  validatePattern
-}: {
-  label: string,
-  validatePattern?: validation
-}): JSX.Element => {
+  htmlForId,
+  textType = TextTypeList.TEXT,
+  disabled,
+  validation,
+}: TextField): JSX.Element => {
   return (
     <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      {validatePattern ? (
+      {validation ? (
         <>
-          <input className="mdl-textfield__input" type="text" pattern={validatePattern.pattern} id="sample4" />
-          <span className="mdl-textfield__error">{validatePattern.error}</span>
+          <input
+            className="mdl-textfield__input"
+            type={textType}
+            pattern={validation.pattern}
+            id={htmlForId}
+            disabled={disabled}
+          />
+          <span className="mdl-textfield__error">{validation.error}</span>
         </>
       ) : (
-        <input className="mdl-textfield__input" type="text" id="sample4" />
+        <input
+          className="mdl-textfield__input"
+          type={textType}
+          id={htmlForId}
+          disabled={disabled}
+        />
       )}
-      <label className="mdl-textfield__label" htmlFor="sample4">{label}</label>
+      <label className="mdl-textfield__label" htmlFor={htmlForId}>
+        {label}
+      </label>
     </div>
   )
 }

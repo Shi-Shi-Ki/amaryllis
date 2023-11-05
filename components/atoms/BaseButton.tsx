@@ -1,51 +1,60 @@
 import _ from "lodash"
 import { MouseEvent } from "react"
+import { match } from "ts-pattern"
 
-type Map = {
-  key: string
-  class: string[]
-}
-const ColorSetting: Map[] = [
-  {
-    key: "primary",
-    class: ["primary-p01", "primary-p02"],
-  },
-]
-const SizeSetting: Map[] = [
-  {
-    key: "large",
-    class: ["size-large01", "size-large02"],
-  },
-]
+export const SizeList = {
+  SMALL: "small",
+  MEDIUM: "medium",
+  LARGE: "large",
+} as const
+export type size = (typeof SizeList)[keyof typeof SizeList]
+
+export const ColorList = {
+  DEFAULT: "default",
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+  DANGER: "danger",
+} as const
+export type color = (typeof ColorList)[keyof typeof ColorList]
 
 export const Button = ({
   children,
-  color = "default",
-  size = "small",
+  color = ColorList.DEFAULT,
+  size = SizeList.SMALL,
   fullWidth = false,
   disabled = false,
   classes = [],
   onClick,
 }: {
   children: React.ReactNode
-  color?: "default" | "primary" | "secondary" | "danger"
-  size?: "large" | "medium" | "small"
+  color?: color
+  size?: size
   fullWidth?: boolean
   disabled?: boolean
   classes?: string[]
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }): JSX.Element => {
-  const _color =
-    _.head(ColorSetting.filter((map: Map) => map.key === color).map((map: Map) => map.class)) || []
+  // const _color =
+  //   _.head(ColorSetting.filter((map: Map) => map.key === color).map((map: Map) => map.class)) || []
+  const _colorClasses = (color: color) =>
+    match(color)
+      .with(ColorList.PRIMARY, () => ["primary-p01", "primary-p02"])
+      .otherwise(() => [])
 
-  const _size =
-    _.head(SizeSetting.filter((map: Map) => map.key === size).map((map: Map) => map.class)) || []
+  // const _size =
+  //   _.head(SizeSetting.filter((map: Map) => map.key === size).map((map: Map) => map.class)) || []
+  const _sizeClasses = (size: size) =>
+    match(size)
+      .with(SizeList.LARGE, () => ["size-large01", "size-large02"])
+      .otherwise(() => [])
 
   const className = [
     "inline-flex",
-    ..._color, // 指定されたカラーのクラス群をマージ
-    ..._size,
-    ...classes, // 指定されたカスタムクラスをマージ
+    // ..._color
+    ..._colorClasses(color),
+    // ..._size,
+    ..._sizeClasses(size),
+    ...classes,
   ].join(" ")
 
   const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
