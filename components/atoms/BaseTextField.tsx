@@ -1,55 +1,47 @@
+import * as CommonTypes from "@/utils/CommonTypes"
+import { useForm, FieldValues, RegisterOptions } from "react-hook-form"
+
 interface TextField {
-  label: string
+  placeholder: string
   htmlForId: string
-  textType?: textType
+  fieldValues: FieldValues
+  textType?: CommonTypes.textType
   disabled?: boolean
-  validation?: validation
+  validation?: RegisterOptions
 }
-
-export type validation = {
-  pattern?: string
-  error: string
-}
-
-export const TextTypeList = {
-  TEXT: "text",
-  EMAIL: "email",
-  PASSWORD: "password",
-} as const
-export type textType = (typeof TextTypeList)[keyof typeof TextTypeList]
 
 export const BaseTextField = ({
-  label,
+  placeholder,
   htmlForId,
-  textType = TextTypeList.TEXT,
-  disabled,
+  fieldValues,
+  textType = CommonTypes.TextType.TEXT,
+  disabled = false,
   validation,
 }: TextField): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+  } = useForm<typeof fieldValues>()
+  const fieldValueKey = fieldValues.keyof
+
   return (
-    <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-      {validation ? (
-        <>
-          <input
-            className="mdl-textfield__input"
-            type={textType}
-            pattern={validation.pattern}
-            id={htmlForId}
-            disabled={disabled}
-          />
-          <span className="mdl-textfield__error">{validation.error}</span>
-        </>
+    <label className="form-control w-full max-w-xs">
+      <input
+        {...register(fieldValueKey, validation)}
+        id={htmlForId}
+        type={textType}
+        placeholder={placeholder}
+        className="input input-bordered w-full max-w-xs"
+        disabled={disabled}
+      />
+      {errors.root ? (
+        <div className="label">
+          <span className="label-text-alt">{errors.root.message}</span>
+        </div>
       ) : (
-        <input
-          className="mdl-textfield__input"
-          type={textType}
-          id={htmlForId}
-          disabled={disabled}
-        />
+        ""
       )}
-      <label className="mdl-textfield__label" htmlFor={htmlForId}>
-        {label}
-      </label>
-    </div>
+    </label>
   )
 }
 

@@ -1,5 +1,6 @@
+import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import { BaseTextField, TextTypeList } from "@/components/atoms/BaseTextField"
+import { BaseTextField } from "@/components/atoms/BaseTextField"
 
 type Story = StoryObj<typeof BaseTextField>
 const meta: Meta<typeof BaseTextField> = {
@@ -11,33 +12,25 @@ const meta: Meta<typeof BaseTextField> = {
 
 export const TextField: Story = {
   args: {
-    label: "text",
     htmlForId: "text",
   },
 }
 
 export const NumberValidation: Story = {
   args: {
-    label: "number",
     htmlForId: "number",
-    validation: {
-      pattern: "-?[0-9]*(.[0-9]+)?",
-      error: "数値を入力してください",
-    },
   },
 }
 
 export const PasswordField: Story = {
   args: {
-    label: "password",
     htmlForId: "password",
-    textType: TextTypeList.PASSWORD,
+    textType: GlobalType.TextType.PASSWORD,
   },
 }
 
 export const Disabled: Story = {
   args: {
-    label: "disabled",
     htmlForId: "disabled",
     disabled: true,
   },

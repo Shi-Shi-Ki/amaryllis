@@ -6,6 +6,15 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
+    {
+      name: "@storybook/addon-postcss",
+      options: {
+        postcssLoaderOptions: {
+          implementation: require("postcss"),
+        },
+      },
+    },
+    "storybook-addon-theme-changer",
   ],
   framework: {
     name: "@storybook/nextjs",
@@ -14,6 +23,7 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  staticDirs: ["../public"],
   // https://storybook.js.org/docs/react/builders/webpack#troubleshooting
   webpackFinal: async (config) => {
     if (config.resolve) {

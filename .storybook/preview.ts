@@ -1,4 +1,6 @@
 import type { Preview } from "@storybook/react"
+import "material-icons/iconfont/material-icons.css"
+import "../app/globals.css"
 
 const preview: Preview = {
   parameters: {
@@ -9,6 +11,9 @@ const preview: Preview = {
         date: /Date$/,
       },
     },
+  },
+  globals: {
+    themes: ["light", "dark"],
   },
 }
 

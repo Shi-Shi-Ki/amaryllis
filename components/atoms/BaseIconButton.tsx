@@ -1,76 +1,57 @@
+import * as CommonTypes from "@/utils/CommonTypes"
+import * as CommonClasses from "@/utils/CommonClasses"
 import { MouseEvent } from "react"
-import { match } from "ts-pattern"
+import { useTheme } from "@/contexts/AppearanceThemeContext"
 
 interface IconButton {
   htmlForId: string
-  color: color
-  icon: icon
+  iconName: string
+  color: CommonTypes.colorType
+  buttonType?: CommonTypes.buttonType
   disabled?: boolean
-  buttonType?: iconButtonType
+  shape?: CommonTypes.shapeType
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
-export const ColorList = {
-  PRIMARY: "primary",
-  ACCENT: "accent",
-  PLAIN: "plain",
-} as const
-export type color = (typeof ColorList)[keyof typeof ColorList]
-
-export const IconList = {
-  ADD: "add",
-  CLOSE: "close",
-  DONE: "done",
-} as const
-export type icon = (typeof IconList)[keyof typeof IconList]
-
-export const IconButtonType = {
-  BUTTON: "button",
-  SUBMIT: "submit",
-} as const
-export type iconButtonType = (typeof IconButtonType)[keyof typeof IconButtonType]
-
-const base = "mdl-button mdl-js-button mdl-button--fab"
-const withRippleEffect = `${base} mdl-js-ripple-effect`
-const colorClass = (color: color) =>
-  match(color)
-    .with(ColorList.PRIMARY, () => `${withRippleEffect} mdl-color--orange mdl-color-text--white`)
-    .with(ColorList.ACCENT, () => `${withRippleEffect} mdl-color--indigo mdl-color-text--white`)
-    .with(ColorList.PLAIN, () => `${withRippleEffect} mdl-color--grey mdl-color-text--white`)
-    .otherwise(() => "")
-
 export const BaseIconButton = ({
   htmlForId,
-  color = ColorList.PRIMARY,
-  icon = IconList.ADD,
+  iconName,
+  color = CommonTypes.ColorType.PRIMARY,
+  buttonType = CommonTypes.ButtonType.BUTTON,
   disabled = false,
-  buttonType = IconButtonType.BUTTON,
+  shape = CommonTypes.ShapeType.SQUARE,
   onClick,
 }: IconButton): JSX.Element => {
-  const clickHandler = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     if (!disabled && onClick) {
       onClick(event)
     }
   }
-  const className = () => {
-    if (disabled) {
-      return base
-    }
-    return colorClass(color)
-  }
-  const materialIcon = () => {
-    return icon
-  }
+
+  const buttonClass = [
+    "btn",
+    CommonClasses.buttonShapeClass(shape),
+    ...CommonClasses.buttonColorClasses(color),
+  ].join(" ")
+  const disabledButtonClass = [
+    "btn",
+    "no-animation",
+    "btn-default",
+    CommonClasses.buttonShapeClass(shape),
+  ].join(" ")
+  const { name } = useTheme()
+  const iconColor = CommonClasses.buttonIconColorClass(color, name)
 
   return (
     <button
       id={htmlForId}
+      className={disabled ? disabledButtonClass : buttonClass}
       type={buttonType}
-      className={className()}
-      onClick={clickHandler}
-      disabled={disabled}
+      onClick={handleSubmit}
     >
-      <i className="material-icons">{materialIcon()}</i>
+      <span className="material-icons" style={{ color: iconColor }}>
+        {iconName}
+      </span>
     </button>
   )
 }

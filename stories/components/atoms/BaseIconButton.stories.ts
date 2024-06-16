@@ -1,5 +1,6 @@
+import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import { BaseIconButton, ColorList, IconList } from "@/components/atoms/BaseIconButton"
+import { BaseIconButton } from "@/components/atoms/BaseIconButton"
 
 type Story = StoryObj<typeof BaseIconButton>
 const meta: Meta<typeof BaseIconButton> = {
@@ -12,32 +13,28 @@ const meta: Meta<typeof BaseIconButton> = {
 export const Primary: Story = {
   args: {
     htmlForId: "primary",
-    color: ColorList.PRIMARY,
-    icon: IconList.ADD,
+    color: GlobalType.ColorType.PRIMARY,
+  },
+}
+
+export const Secondary: Story = {
+  args: {
+    htmlForId: "secondary",
+    color: GlobalType.ColorType.SECONDARY,
   },
 }
 
 export const Accent: Story = {
   args: {
     htmlForId: "accent",
-    color: ColorList.ACCENT,
-    icon: IconList.ADD,
-  },
-}
-
-export const Plain: Story = {
-  args: {
-    htmlForId: "plain",
-    color: ColorList.PLAIN,
-    icon: IconList.ADD,
+    color: GlobalType.ColorType.ACCENT,
   },
 }
 
 export const Disabled: Story = {
   args: {
     htmlForId: "primary",
-    color: ColorList.PRIMARY,
-    icon: IconList.ADD,
+    color: GlobalType.ColorType.PRIMARY,
     disabled: true,
   },
 }

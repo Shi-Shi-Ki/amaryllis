@@ -1,55 +1,26 @@
 "use client"
-import { BaseIconButton, ColorList, IconList } from "@/components/atoms/BaseIconButton"
-import { BaseTextField, TextTypeList, validation } from "@/components/atoms/BaseTextField"
-import { BaseLabelButton, ColorList as ButtonColorList } from "@/components/atoms/BaseLabelButton"
+import * as CommonTypes from "@/utils/CommonTypes"
+import { BaseButton } from "@/components/atoms/BaseButton"
+import { BaseIconButton } from "@/components/atoms/BaseIconButton"
 
 export default function About() {
-  const numberValidation = {
-    pattern: "-?[0-9]*(.[0-9]+)?",
-    error: "数値を入力してください",
-  } as validation
-  const emailValidation = {
-    error: "メールアドレスの形式に誤りがあります",
-  }
   return (
     <>
       <h1>about page!!!</h1>
-      <div>
-        <BaseIconButton
-          htmlForId={"test_button"}
-          color={ColorList.PRIMARY}
-          icon={IconList.ADD}
-        ></BaseIconButton>
-      </div>
-      <div>
-        <BaseTextField
-          label="number"
-          htmlForId="number"
-          validation={numberValidation}
-        ></BaseTextField>
-      </div>
-      <div>
-        <BaseTextField
-          label="email"
-          textType={TextTypeList.EMAIL}
-          htmlForId="email"
-          validation={emailValidation}
-        ></BaseTextField>
-      </div>
-      <div>
-        <BaseTextField
-          label="password"
-          textType={TextTypeList.PASSWORD}
-          htmlForId="password"
-        ></BaseTextField>
-      </div>
-      <div>
-        <BaseLabelButton
-          label="submit"
-          color={ButtonColorList.ACCENT}
-          htmlForId="submit_button"
-        ></BaseLabelButton>
-      </div>
+      <input type="checkbox" value="synthwave" className="toggle theme-controller" />
+      <BaseButton
+        htmlForId="base-button"
+        color={CommonTypes.ColorType.OUTLINE_ACCENT}
+        size={CommonTypes.SizeType.MEDIUM}
+        // classes={["btn-secondary"]}
+      >
+        test
+      </BaseButton>
+      <BaseIconButton
+        htmlForId="base-icon-button"
+        iconName="home"
+        color={CommonTypes.ColorType.SECONDARY}
+      />
     </>
   )
 }
