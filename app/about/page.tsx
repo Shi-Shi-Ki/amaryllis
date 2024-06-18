@@ -7,7 +7,6 @@ export default function About() {
   return (
     <>
       <h1>about page!!!</h1>
-      <input type="checkbox" value="synthwave" className="toggle theme-controller" />
       <BaseButton
         htmlForId="base-button"
         color={CommonTypes.ColorType.OUTLINE_ACCENT}

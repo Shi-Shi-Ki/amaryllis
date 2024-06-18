@@ -30,7 +30,6 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       : ThemeType.LIGHT
   )
   useEffect(() => {
-    console.log(`* AppearanceThemeContext - useEffect (name: ${name})`)
     localStorage.setItem("theme", name ?? "")
   }, [name])
   return <ThemeContext.Provider value={{ name, setName }}>{children}</ThemeContext.Provider>

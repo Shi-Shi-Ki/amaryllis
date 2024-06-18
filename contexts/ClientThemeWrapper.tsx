@@ -15,8 +15,8 @@ export default function ClientThemeWrapper({ children }: any) {
             setName(e.target.checked ? ThemeType.LIGHT : ThemeType.DARK)
           }}
         />
-        <span className="material-icons">light_mode</span>
-        <span className="material-icons">dark_mode</span>
+        <span className="swap-off material-icons">light_mode</span>
+        <span className="swap-on material-icons">dark_mode</span>
       </label>
       {children}
     </div>
