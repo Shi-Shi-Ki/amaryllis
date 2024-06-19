@@ -49,6 +49,9 @@ const meta: Meta<typeof BaseButton> = {
       control: "text",
       description: "任意のclass要素",
     },
+    onClick: {
+      description: "ボタン押下時のコールバック関数",
+    },
   },
   args: {
     htmlForId: "dummy_id",
