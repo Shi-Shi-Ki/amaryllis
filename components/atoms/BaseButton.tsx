@@ -12,6 +12,7 @@ export const BaseButton = ({
   disabled = false,
   classes = [],
   onClick,
+  shape = CommonTypes.ShapeType.SQUARE,
 }: {
   htmlForId: string
   children: React.ReactNode
@@ -21,11 +22,13 @@ export const BaseButton = ({
   disabled?: boolean
   classes?: string[]
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void
+  shape?: CommonTypes.shapeType
 }): JSX.Element => {
   const className = [
     "btn",
     ...(disabled ? ["no-animation", "btn-default"] : CommonClasses.buttonColorClasses(color)),
     ...CommonClasses.buttonSizeClasses(size),
+    CommonClasses.buttonShapeClass(shape),
     ...classes,
   ].join(" ")
 

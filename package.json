@@ -12,6 +12,7 @@
     "test": "jest",
     "start-sb": "storybook dev -p 6006",
     "build-sb": "storybook build",
+    "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=chpt_e6017b4298dd3e3",
     "check-update": "npx -p npm-check-updates  -c 'ncu'"
   },

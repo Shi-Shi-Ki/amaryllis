@@ -5,6 +5,7 @@ import * as tw from "@/tailwind.config"
 /**
  * ボタン配色class名
  * @param color
+ * @return class名配列
  */
 export const buttonColorClasses = (color: CommonTypes.colorType) =>
   match(color)
@@ -21,9 +22,23 @@ export const buttonColorClasses = (color: CommonTypes.colorType) =>
     .otherwise(() => [])
 
 /**
+ * 入力フォーム配色class名
+ * @param color
+ * @return class名配列
+ */
+export const inputColorClasses = (color: CommonTypes.colorType) =>
+  match(color)
+    .with(CommonTypes.ColorType.PRIMARY, () => ["input-primary"])
+    .with(CommonTypes.ColorType.SECONDARY, () => ["input-secondary"])
+    .with(CommonTypes.ColorType.ACCENT, () => ["input-accent"])
+    .with(CommonTypes.ColorType.GHOST, () => ["input-ghost"])
+    .with(CommonTypes.ColorType.ERROR, () => ["input-error"])
+    .otherwise(() => [])
+
+/**
  * ボタンサイズclass名
  * @param size
- * @returns ボタンサイズclass名
+ * @returns class名配列
  */
 export const buttonSizeClasses = (size: CommonTypes.sizeType) =>
   match(size)
@@ -33,22 +48,22 @@ export const buttonSizeClasses = (size: CommonTypes.sizeType) =>
     .otherwise(() => [])
 
 /**
- * 入力フォームサイズclass名
+ * 入力フォームの横幅サイズclass名
  * @param size
- * @returns ボタンサイズclass名
+ * @returns class名配列
  */
-export const inputSizeClasses = (size: CommonTypes.sizeType) =>
+export const inputWidthSizeClasses = (size: CommonTypes.sizeType) =>
   match(size)
-    .with(CommonTypes.SizeType.TINY, () => ["input-xs"])
-    .with(CommonTypes.SizeType.SMALL, () => ["input-sm"])
-    .with(CommonTypes.SizeType.MEDIUM, () => ["input-md"])
-    .with(CommonTypes.SizeType.LARGE, () => ["input-lg"])
+    .with(CommonTypes.SizeType.TINY, () => ["max-w-xs"])
+    .with(CommonTypes.SizeType.SMALL, () => ["max-w-sm"])
+    .with(CommonTypes.SizeType.MEDIUM, () => ["max-w-md"])
+    .with(CommonTypes.SizeType.LARGE, () => ["max-w-lg"])
     .otherwise(() => [])
 
 /**
  * ボタン形状class名
  * @param shape
- * @returns ボタン形状class名
+ * @returns class名
  */
 export const buttonShapeClass = (shape: CommonTypes.shapeType) =>
   match(shape)
@@ -59,9 +74,13 @@ export const buttonShapeClass = (shape: CommonTypes.shapeType) =>
 /**
  * ボタンアイコン配色
  * @param color
- * @returns ボタンアイコン配色class名
+ * @param themeName
+ * @returns 色コード
  */
-export const buttonIconColorClass = (color: CommonTypes.colorType, themeName?: string) => {
+export const buttonIconColorClass = (
+  color: CommonTypes.colorType,
+  themeName?: CommonTypes.themeType
+) => {
   let daisyuiColor = null
   if (themeName) {
     daisyuiColor = tw.daisyui.themes[0][`${themeName}`]
@@ -69,21 +88,24 @@ export const buttonIconColorClass = (color: CommonTypes.colorType, themeName?: s
   return match(color)
     .with(CommonTypes.ColorType.OUTLINE_DEFAULT, () => "#ffffff")
     .with(CommonTypes.ColorType.NEUTRAL, () => "#ffffff")
-    .with(
-      CommonTypes.ColorType.PRIMARY,
-      () => daisyuiColor ?? daisyuiColor["primary-content"] ?? "#ffffff"
-    )
+    .with(CommonTypes.ColorType.PRIMARY, () => daisyuiColor["primary-content"] ?? "#ffffff")
     .with(CommonTypes.ColorType.OUTLINE_PRIMARY, () => "#ffffff")
-    .with(
-      CommonTypes.ColorType.SECONDARY,
-      () => daisyuiColor ?? daisyuiColor["secondary-content"] ?? "#ffffff"
-    )
+    .with(CommonTypes.ColorType.SECONDARY, () => daisyuiColor["secondary-content"] ?? "#ffffff")
     .with(CommonTypes.ColorType.OUTLINE_SECONDARY, () => "#ffffff")
-    .with(
-      CommonTypes.ColorType.ACCENT,
-      () => daisyuiColor ?? daisyuiColor["accent-content"] ?? "#ffffff"
-    )
+    .with(CommonTypes.ColorType.ACCENT, () => daisyuiColor["accent-content"] ?? "#ffffff")
     .with(CommonTypes.ColorType.OUTLINE_ACCENT, () => "#ffffff")
     .with(CommonTypes.ColorType.GHOST, () => "#ffffff")
+    .otherwise(() => "#000000")
+}
+
+/**
+ * テーマごとのシンプルな反転色
+ * @param themeName
+ * @return 色コード
+ */
+export const simpleThemeColorName = (themeName: CommonTypes.themeType) => {
+  return match(themeName)
+    .with(CommonTypes.ThemeType.LIGHT, () => "#000000")
+    .with(CommonTypes.ThemeType.DARK, () => "#ffffff")
     .otherwise(() => "#000000")
 }

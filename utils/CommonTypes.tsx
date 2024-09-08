@@ -5,7 +5,7 @@ export const ThemeType = {
   NONE: "",
   LIGHT: "light",
   DARK: "dark",
-}
+} as const
 export type themeType = (typeof ThemeType)[keyof typeof ThemeType]
 
 /**
@@ -23,6 +23,7 @@ export const ColorType = {
   OUTLINE_ACCENT: "outline_accent",
   GHOST: "ghost",
   LINK: "link",
+  ERROR: "error",
 } as const
 export type colorType = (typeof ColorType)[keyof typeof ColorType]
 

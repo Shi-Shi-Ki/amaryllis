@@ -1,47 +1,58 @@
 import * as CommonTypes from "@/utils/CommonTypes"
-import { useForm, FieldValues, RegisterOptions } from "react-hook-form"
+import { UseFormRegisterReturn, FieldError } from "react-hook-form"
+import * as CommonClasses from "@/utils/CommonClasses"
 
 interface TextField {
-  placeholder: string
+  register: UseFormRegisterReturn
   htmlForId: string
-  fieldValues: FieldValues
-  textType?: CommonTypes.textType
+  color: CommonTypes.colorType
+  widthSize?: CommonTypes.sizeType
+  placeholder?: string
+  errorMessage?: FieldError
   disabled?: boolean
-  validation?: RegisterOptions
+  hintText?: string
+  textType?: CommonTypes.textType
 }
 
 export const BaseTextField = ({
+  register,
+  errorMessage,
   placeholder,
   htmlForId,
-  fieldValues,
-  textType = CommonTypes.TextType.TEXT,
+  widthSize = CommonTypes.SizeType.SMALL,
+  color,
   disabled = false,
-  validation,
+  hintText,
+  textType = CommonTypes.TextType.TEXT,
 }: TextField): JSX.Element => {
-  const {
-    register,
-    formState: { errors },
-  } = useForm<typeof fieldValues>()
-  const fieldValueKey = fieldValues.keyof
-
+  const classNames = [
+    "input input-bordered flex items-center gap-2 w-full max-w-xs",
+    CommonClasses.inputWidthSizeClasses(widthSize),
+    CommonClasses.inputColorClasses(color),
+  ].join(" ")
   return (
-    <label className="form-control w-full max-w-xs">
-      <input
-        {...register(fieldValueKey, validation)}
-        id={htmlForId}
-        type={textType}
-        placeholder={placeholder}
-        className="input input-bordered w-full max-w-xs"
-        disabled={disabled}
-      />
-      {errors.root ? (
+    <>
+      {hintText && (
         <div className="label">
-          <span className="label-text-alt">{errors.root.message}</span>
+          <span className="label-text">{hintText}</span>
         </div>
-      ) : (
-        ""
       )}
-    </label>
+      <label className={classNames}>
+        <input
+          {...register}
+          id={htmlForId}
+          type={textType}
+          placeholder={placeholder}
+          className="grow"
+          disabled={disabled}
+        />
+      </label>
+      {errorMessage && (
+        <div className="label">
+          <span className="label-text-alt text-error">{errorMessage.message}</span>
+        </div>
+      )}
+    </>
   )
 }
 

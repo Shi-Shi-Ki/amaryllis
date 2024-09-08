@@ -6,6 +6,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./utils/**/*.{js,ts,jsx,tsx,mdx}",
     "./stories/**/*.{js,ts,jsx,tsx}",
+    "./contexts/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -25,6 +26,7 @@ module.exports = {
           secondary: "#E69379",
           "secondary-content": "#000000",
           accent: "#C6A324",
+          "accent-content": "#000000",
         },
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
@@ -32,6 +34,7 @@ module.exports = {
           "primary-content": "#000000",
           secondary: "#863219",
           accent: "#DBB839",
+          "accent-content": "#000000",
         },
       },
     ],

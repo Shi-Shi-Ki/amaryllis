@@ -1,8 +1,7 @@
-import { ThemeProvider } from "@/contexts/AppearanceThemeContext"
 import "./globals.css"
 import "material-icons/iconfont/material-icons.css"
 import { Inter } from "next/font/google"
-import ClientThemeWrapper from "@/contexts/ClientThemeWrapper"
+import ThemeChanger from "@/contexts/ThemeChanger"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -15,9 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <ThemeProvider>
-          <ClientThemeWrapper>{children}</ClientThemeWrapper>
-        </ThemeProvider>
+        <ThemeChanger>{children}</ThemeChanger>
       </body>
     </html>
   )
