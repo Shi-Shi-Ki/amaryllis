@@ -44,6 +44,7 @@ export type sizeType = (typeof SizeType)[keyof typeof SizeType]
 export const ShapeType = {
   SQUARE: "square",
   CIRCLE: "circle",
+  NONE: "none",
 } as const
 export type shapeType = (typeof ShapeType)[keyof typeof ShapeType]
 

@@ -6,22 +6,22 @@ import { MouseEvent } from "react"
 export const BaseButton = ({
   htmlForId,
   children,
+  onClick,
   color = CommonTypes.ColorType.DEFAULT,
   size = CommonTypes.SizeType.SMALL,
   buttonType = CommonTypes.ButtonType.BUTTON,
   disabled = false,
   classes = [],
-  onClick,
-  shape = CommonTypes.ShapeType.SQUARE,
+  shape,
 }: {
   htmlForId: string
   children: React.ReactNode
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
   color?: CommonTypes.colorType
   size?: CommonTypes.sizeType
   buttonType?: CommonTypes.buttonType
   disabled?: boolean
   classes?: string[]
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
   shape?: CommonTypes.shapeType
 }): JSX.Element => {
   const className = [

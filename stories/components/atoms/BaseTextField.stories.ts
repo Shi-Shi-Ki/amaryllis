@@ -57,6 +57,13 @@ const meta: Meta<typeof BaseTextField> = {
     } as FieldError,
     disabled: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        component: "入力フィールド<br/>任意のバリデーションやメッセージも設定可能",
+      },
+    },
+  },
 }
 
 export const Primary: Story = {

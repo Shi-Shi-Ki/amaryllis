@@ -26,6 +26,9 @@ const meta: Meta<typeof BaseButton> = {
     children: {
       description: "タグ内の要素、任意のテキストやタグなど",
     },
+    onClick: {
+      description: "ボタン押下時のコールバック関数",
+    },
     size: {
       control: "radio",
       options: [
@@ -49,8 +52,14 @@ const meta: Meta<typeof BaseButton> = {
       control: "text",
       description: "任意のclass要素",
     },
-    onClick: {
-      description: "ボタン押下時のコールバック関数",
+    shape: {
+      control: "radio",
+      options: [
+        GlobalType.ShapeType.NONE,
+        GlobalType.ShapeType.CIRCLE,
+        GlobalType.ShapeType.SQUARE,
+      ],
+      description: "ボタンの形状タイプ（アイコンとの組み合わせで使用する）",
     },
   },
   args: {
@@ -60,6 +69,14 @@ const meta: Meta<typeof BaseButton> = {
     buttonType: GlobalType.ButtonType.BUTTON,
     size: GlobalType.SizeType.SMALL,
     disabled: false,
+    shape: GlobalType.ShapeType.NONE,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component: "任意の文字列やアイコンを組み合わせて使用する",
+      },
+    },
   },
 }
 

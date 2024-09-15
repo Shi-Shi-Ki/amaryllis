@@ -65,8 +65,9 @@ export const inputWidthSizeClasses = (size: CommonTypes.sizeType) =>
  * @param shape
  * @returns class名
  */
-export const buttonShapeClass = (shape: CommonTypes.shapeType) =>
+export const buttonShapeClass = (shape?: CommonTypes.shapeType) =>
   match(shape)
+    .with(CommonTypes.ShapeType.NONE, () => "")
     .with(CommonTypes.ShapeType.SQUARE, () => "btn-square")
     .with(CommonTypes.ShapeType.CIRCLE, () => "btn-circle")
     .otherwise(() => "")
