@@ -15,7 +15,16 @@ const meta: Meta<typeof BaseIcon> = {
       description: "アイコン名",
     },
     buttonColor: {
-      description: "ボタンの色タイプ",
+      control: "radio",
+      options: [
+        GlobalType.ColorType.DEFAULT,
+        GlobalType.ColorType.PRIMARY,
+        GlobalType.ColorType.SECONDARY,
+        GlobalType.ColorType.ACCENT,
+        GlobalType.ColorType.NEUTRAL,
+        GlobalType.ColorType.GHOST,
+      ],
+      description: "色のタイプ値",
     },
     htmlForId: {
       description: "id値（デフォルトはランダムなuuid）",

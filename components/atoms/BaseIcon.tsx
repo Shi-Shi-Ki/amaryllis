@@ -1,20 +1,19 @@
-import * as CommonTypes from "@/utils/CommonTypes"
 import * as CommonClasses from "@/utils/CommonClasses"
 import { useTheme } from "@/contexts/ThemeChanger"
 import { v7 as uuid } from "uuid"
+import { ButtonColor } from "./BaseButton"
 
-export const BaseIcon = ({
-  iconName,
-  buttonColor,
-  htmlForId,
-}: {
+interface BaseIcon {
   iconName: string
-  buttonColor?: CommonTypes.colorType
+  buttonColor?: ButtonColor
   htmlForId?: string
-}): JSX.Element => {
+}
+
+export const BaseIcon = ({ iconName, buttonColor, htmlForId }: BaseIcon): JSX.Element => {
   const { theme } = useTheme()
   let iconColor = CommonClasses.simpleThemeColorName(theme)
   if (buttonColor) {
+    // ボタンと組み合わせる場合はボタンの色に合わせてアイコンの配色が自動で設定されるようにする
     iconColor = CommonClasses.buttonIconColorClass(buttonColor, theme)
   }
   if (!htmlForId) {

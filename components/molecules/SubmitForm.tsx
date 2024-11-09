@@ -1,13 +1,13 @@
 import * as CommonTypes from "@/utils/CommonTypes"
 import { MouseEvent } from "react"
-import { BaseButton } from "@/components/atoms/BaseButton"
+import { BaseButton, ButtonColor } from "@/components/atoms/BaseButton"
 
 interface SubmitFormProps {
   htmlForId: string
   method: CommonTypes.methodType
   uri: string
   submitElements: React.ReactNode
-  buttonColor?: CommonTypes.colorType
+  buttonColor: ButtonColor
   disabled?: boolean
   onClick: (event: MouseEvent<HTMLButtonElement>) => void
 }
@@ -17,7 +17,7 @@ export const SubmitForm = ({
   method,
   uri,
   submitElements,
-  buttonColor = CommonTypes.ColorType.ACCENT,
+  buttonColor,
   disabled = false,
   onClick,
 }: SubmitFormProps): JSX.Element => {

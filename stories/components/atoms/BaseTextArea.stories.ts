@@ -1,12 +1,12 @@
 import * as GlobalType from "@/utils/CommonTypes"
-import type { Meta, StoryObj } from "@storybook/react"
-import { BaseTextField } from "@/components/atoms/BaseTextField"
+import { BaseTextArea } from "@/components/atoms/BaseTextArea"
 import { FieldError } from "react-hook-form"
+import { StoryObj, Meta } from "@storybook/react/*"
 
-type Story = StoryObj<typeof BaseTextField>
-const meta: Meta<typeof BaseTextField> = {
-  title: "components/atoms/BaseTextField",
-  component: BaseTextField,
+type Story = StoryObj<typeof BaseTextArea>
+const meta: Meta<typeof BaseTextArea> = {
+  title: "components/atoms/BaseTextArea",
+  component: BaseTextArea,
   tags: ["autodocs"],
   argTypes: {
     htmlForId: {
@@ -15,22 +15,36 @@ const meta: Meta<typeof BaseTextField> = {
     color: {
       control: "radio",
       options: [
-        GlobalType.ColorType.DEFAULT,
         GlobalType.ColorType.PRIMARY,
         GlobalType.ColorType.SECONDARY,
         GlobalType.ColorType.ACCENT,
-        GlobalType.ColorType.NEUTRAL,
+        GlobalType.ColorType.ERROR,
         GlobalType.ColorType.GHOST,
       ],
       description: "色のタイプ値",
     },
+    widthSize: {
+      description: "横幅",
+      control: "radio",
+      options: [
+        GlobalType.SizeType.TINY,
+        GlobalType.SizeType.SMALL,
+        GlobalType.SizeType.MEDIUM,
+        GlobalType.SizeType.LARGE,
+      ],
+    },
+    componentSize: {
+      description: "フォームの大きさ",
+      control: "radio",
+      options: [
+        GlobalType.SizeType.TINY,
+        GlobalType.SizeType.SMALL,
+        GlobalType.SizeType.MEDIUM,
+        GlobalType.SizeType.LARGE,
+      ],
+    },
     register: {
       description: "バリデーション設定",
-    },
-    textType: {
-      control: "radio",
-      options: [GlobalType.TextType.TEXT, GlobalType.TextType.EMAIL, GlobalType.TextType.PASSWORD],
-      description: "フォームタイプ",
     },
     placeholder: {
       description: "フォーム内のプレスホルダー値",
@@ -41,6 +55,10 @@ const meta: Meta<typeof BaseTextField> = {
     errorMessage: {
       description: "エラーメッセージ",
     },
+    rows: {
+      control: "text",
+      description: "行数",
+    },
     disabled: {
       control: "boolean",
       description: "非活性の設定",
@@ -48,8 +66,9 @@ const meta: Meta<typeof BaseTextField> = {
   },
   args: {
     htmlForId: "dummy_id",
+    widthSize: GlobalType.SizeType.MEDIUM,
+    componentSize: GlobalType.SizeType.MEDIUM,
     color: GlobalType.ColorType.PRIMARY,
-    textType: GlobalType.TextType.TEXT,
     placeholder: "入力フォーム",
     hintText: "入力フォームです",
     errorMessage: {
@@ -87,13 +106,6 @@ export const Accent: Story = {
   },
 }
 
-export const Ghost: Story = {
-  args: {
-    htmlForId: "ghost",
-    color: GlobalType.ColorType.GHOST,
-  },
-}
-
 export const Error: Story = {
   args: {
     htmlForId: "error",
@@ -101,10 +113,10 @@ export const Error: Story = {
   },
 }
 
-export const Disabled: Story = {
+export const Ghost: Story = {
   args: {
-    htmlForId: "disabled",
-    disabled: true,
+    htmlForId: "ghost",
+    color: GlobalType.ColorType.GHOST,
   },
 }
 

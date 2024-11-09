@@ -3,74 +3,47 @@ import * as CommonTypes from "@/utils/CommonTypes"
 import * as tw from "@/tailwind.config"
 
 /**
- * ボタン配色class名
+ * 先頭にcomponent名を付けた配色class名
+ * @param componentName
  * @param color
- * @return class名配列
+ * @returns component名を付加した配色class名
  */
-export const buttonColorClasses = (color: CommonTypes.colorType) =>
-  match(color)
-    .with(CommonTypes.ColorType.OUTLINE_DEFAULT, () => ["btn-outline"])
-    .with(CommonTypes.ColorType.NEUTRAL, () => ["btn-neutral"])
-    .with(CommonTypes.ColorType.PRIMARY, () => ["btn-primary"])
-    .with(CommonTypes.ColorType.OUTLINE_PRIMARY, () => ["btn-outline", "btn-primary"])
-    .with(CommonTypes.ColorType.SECONDARY, () => ["btn-secondary"])
-    .with(CommonTypes.ColorType.OUTLINE_SECONDARY, () => ["btn-outline", "btn-secondary"])
-    .with(CommonTypes.ColorType.ACCENT, () => ["btn-accent"])
-    .with(CommonTypes.ColorType.OUTLINE_ACCENT, () => ["btn-outline", "btn-accent"])
-    .with(CommonTypes.ColorType.GHOST, () => ["btn-ghost"])
-    .with(CommonTypes.ColorType.LINK, () => ["btn-link"])
-    .otherwise(() => [])
+export const addPrefixComponentNameByColor = (
+  componentName: string,
+  color: CommonTypes.colorType
+) => `${componentName}-${color}`
 
 /**
- * 入力フォーム配色class名
- * @param color
- * @return class名配列
+ * 先頭にcomponent名を付けたサイズclass名
+ * @param componentName
+ * @param size
+ * @returns component名を付加したサイズclass名
  */
+export const addPrefixComponentNameBySize = (componentName: string, size: CommonTypes.sizeType) =>
+  `${componentName}-${convertSizeClassName(size)}`
+
+/**
+ * 最大横幅サイズのclass名
+ * @param size
+ * @returns 横幅サイズのclass名
+ */
+export const maxWidthElement = (size: CommonTypes.sizeType) =>
+  match(size)
+    .with(CommonTypes.SizeType.TINY, () => "max-w-xs")
+    .with(CommonTypes.SizeType.SMALL, () => "max-w-sm")
+    .with(CommonTypes.SizeType.MEDIUM, () => "max-w-md")
+    .with(CommonTypes.SizeType.LARGE, () => "max-w-lg")
+    .otherwise(() => "")
+
 export const inputColorClasses = (color: CommonTypes.colorType) =>
   match(color)
-    .with(CommonTypes.ColorType.PRIMARY, () => ["input-primary"])
-    .with(CommonTypes.ColorType.SECONDARY, () => ["input-secondary"])
-    .with(CommonTypes.ColorType.ACCENT, () => ["input-accent"])
-    .with(CommonTypes.ColorType.GHOST, () => ["input-ghost"])
-    .with(CommonTypes.ColorType.ERROR, () => ["input-error"])
+    .with(CommonTypes.ColorType.NEUTRAL, () => "input-neutral")
+    .with(CommonTypes.ColorType.PRIMARY, () => "input-primary")
+    .with(CommonTypes.ColorType.SECONDARY, () => "input-secondary")
+    .with(CommonTypes.ColorType.ACCENT, () => "input-accent")
+    .with(CommonTypes.ColorType.GHOST, () => "input-ghost")
+    .with(CommonTypes.ColorType.ERROR, () => "input-error")
     .otherwise(() => [])
-
-/**
- * ボタンサイズclass名
- * @param size
- * @returns class名配列
- */
-export const buttonSizeClasses = (size: CommonTypes.sizeType) =>
-  match(size)
-    .with(CommonTypes.SizeType.TINY, () => ["btn-xs"])
-    .with(CommonTypes.SizeType.SMALL, () => ["btn-sm"])
-    .with(CommonTypes.SizeType.LARGE, () => ["btn-lg"])
-    .otherwise(() => [])
-
-/**
- * 入力フォームの横幅サイズclass名
- * @param size
- * @returns class名配列
- */
-export const inputWidthSizeClasses = (size: CommonTypes.sizeType) =>
-  match(size)
-    .with(CommonTypes.SizeType.TINY, () => ["max-w-xs"])
-    .with(CommonTypes.SizeType.SMALL, () => ["max-w-sm"])
-    .with(CommonTypes.SizeType.MEDIUM, () => ["max-w-md"])
-    .with(CommonTypes.SizeType.LARGE, () => ["max-w-lg"])
-    .otherwise(() => [])
-
-/**
- * ボタン形状class名
- * @param shape
- * @returns class名
- */
-export const buttonShapeClass = (shape?: CommonTypes.shapeType) =>
-  match(shape)
-    .with(CommonTypes.ShapeType.NONE, () => "")
-    .with(CommonTypes.ShapeType.SQUARE, () => "btn-square")
-    .with(CommonTypes.ShapeType.CIRCLE, () => "btn-circle")
-    .otherwise(() => "")
 
 /**
  * ボタンアイコン配色
@@ -79,7 +52,7 @@ export const buttonShapeClass = (shape?: CommonTypes.shapeType) =>
  * @returns 色コード
  */
 export const buttonIconColorClass = (
-  color: CommonTypes.colorType,
+  color: CommonTypes.colorType | CommonTypes.colorTypeByOutLines,
   themeName?: CommonTypes.themeType
 ) => {
   let daisyuiColor = null
@@ -110,3 +83,11 @@ export const simpleThemeColorName = (themeName: CommonTypes.themeType) => {
     .with(CommonTypes.ThemeType.DARK, () => "#ffffff")
     .otherwise(() => "#000000")
 }
+
+const convertSizeClassName = (size: CommonTypes.sizeType) =>
+  match(size)
+    .with(CommonTypes.SizeType.TINY, () => "xs")
+    .with(CommonTypes.SizeType.SMALL, () => "sm")
+    .with(CommonTypes.SizeType.MEDIUM, () => "md")
+    .with(CommonTypes.SizeType.LARGE, () => "lg")
+    .otherwise(() => "")
