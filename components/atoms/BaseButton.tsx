@@ -1,6 +1,6 @@
 import _ from "lodash"
 import * as CommonTypes from "@/utils/CommonTypes"
-import { MouseEvent } from "react"
+import { JSX, MouseEvent } from "react"
 import { tv } from "tailwind-variants"
 
 export type ButtonColor =
@@ -76,7 +76,6 @@ export const BaseButton = ({
     <button
       // fullWithやdisabledの場合、クラスを追加する
       id={htmlForId}
-      // className={className}
       className={defineClasses({ color: color, disabled: disabled, size: size, shape: shape })}
       type={buttonType}
       onClick={handleSubmit}

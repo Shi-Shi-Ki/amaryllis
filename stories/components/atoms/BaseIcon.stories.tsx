@@ -1,6 +1,7 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
 import { BaseIcon } from "@/components/atoms/BaseIcon"
+import BaseButton from "@/components/atoms/BaseButton"
 
 /**
  * https://marella.me/material-icons/demo/
@@ -14,7 +15,7 @@ const meta: Meta<typeof BaseIcon> = {
     iconName: {
       description: "アイコン名",
     },
-    buttonColor: {
+    iconColor: {
       control: "radio",
       options: [
         GlobalType.ColorType.DEFAULT,
@@ -32,7 +33,7 @@ const meta: Meta<typeof BaseIcon> = {
   },
   args: {
     iconName: "home",
-    buttonColor: GlobalType.ColorType.PRIMARY,
+    iconColor: GlobalType.ColorType.PRIMARY,
   },
   parameters: {
     docs: {
@@ -47,20 +48,62 @@ const meta: Meta<typeof BaseIcon> = {
 export const Primary: Story = {
   args: {
     iconName: "add",
-    buttonColor: GlobalType.ColorType.PRIMARY,
+    iconColor: GlobalType.ColorType.PRIMARY,
   },
+}
+export const WithPrimaryButton: Story = {
+  render: () => (
+    <>
+      <BaseButton
+        htmlForId="with-primary-button"
+        color={GlobalType.ColorType.PRIMARY}
+        onClick={() => {}}
+        shape={GlobalType.ShapeType.CIRCLE}
+      >
+        <BaseIcon iconName="add" />
+      </BaseButton>
+    </>
+  ),
 }
 export const Secondary: Story = {
   args: {
     iconName: "help",
-    buttonColor: GlobalType.ColorType.SECONDARY,
+    iconColor: GlobalType.ColorType.SECONDARY,
   },
+}
+export const WithSecondaryButton: Story = {
+  render: () => (
+    <>
+      <BaseButton
+        htmlForId="with-secondary-button"
+        color={GlobalType.ColorType.SECONDARY}
+        onClick={() => {}}
+        shape={GlobalType.ShapeType.CIRCLE}
+      >
+        <BaseIcon iconName="help" />
+      </BaseButton>
+    </>
+  ),
 }
 export const Accent: Story = {
   args: {
     iconName: "language",
-    buttonColor: GlobalType.ColorType.ACCENT,
+    iconColor: GlobalType.ColorType.ACCENT,
   },
+}
+export const WithAccentButton: Story = {
+  render: () => (
+    <>
+      <BaseButton
+        htmlForId="with-accent-button"
+        color={GlobalType.ColorType.ACCENT}
+        onClick={() => {}}
+        shape={GlobalType.ShapeType.SQUARE}
+      >
+        <BaseIcon iconName="language" />
+      </BaseButton>
+    </>
+  ),
 }
 
 export default meta

@@ -1,5 +1,5 @@
 import * as CommonTypes from "@/utils/CommonTypes"
-import { ChangeEvent } from "react"
+import { ChangeEvent, JSX } from "react"
 import { tv } from "tailwind-variants"
 
 export type CheckBoxColor =

@@ -45,45 +45,6 @@ export const inputColorClasses = (color: CommonTypes.colorType) =>
     .with(CommonTypes.ColorType.ERROR, () => "input-error")
     .otherwise(() => [])
 
-/**
- * ボタンアイコン配色
- * @param color
- * @param themeName
- * @returns 色コード
- */
-export const buttonIconColorClass = (
-  color: CommonTypes.colorType | CommonTypes.colorTypeByOutLines,
-  themeName?: CommonTypes.themeType
-) => {
-  let daisyuiColor = null
-  if (themeName) {
-    daisyuiColor = tw.daisyui.themes[0][`${themeName}`]
-  }
-  return match(color)
-    .with(CommonTypes.ColorType.OUTLINE_DEFAULT, () => "#ffffff")
-    .with(CommonTypes.ColorType.NEUTRAL, () => "#ffffff")
-    .with(CommonTypes.ColorType.PRIMARY, () => daisyuiColor["primary-content"] ?? "#ffffff")
-    .with(CommonTypes.ColorType.OUTLINE_PRIMARY, () => "#ffffff")
-    .with(CommonTypes.ColorType.SECONDARY, () => daisyuiColor["secondary-content"] ?? "#ffffff")
-    .with(CommonTypes.ColorType.OUTLINE_SECONDARY, () => "#ffffff")
-    .with(CommonTypes.ColorType.ACCENT, () => daisyuiColor["accent-content"] ?? "#ffffff")
-    .with(CommonTypes.ColorType.OUTLINE_ACCENT, () => "#ffffff")
-    .with(CommonTypes.ColorType.GHOST, () => "#ffffff")
-    .otherwise(() => "#000000")
-}
-
-/**
- * テーマごとのシンプルな反転色
- * @param themeName
- * @return 色コード
- */
-export const simpleThemeColorName = (themeName: CommonTypes.themeType) => {
-  return match(themeName)
-    .with(CommonTypes.ThemeType.LIGHT, () => "#000000")
-    .with(CommonTypes.ThemeType.DARK, () => "#ffffff")
-    .otherwise(() => "#000000")
-}
-
 const convertSizeClassName = (size: CommonTypes.sizeType) =>
   match(size)
     .with(CommonTypes.SizeType.TINY, () => "xs")

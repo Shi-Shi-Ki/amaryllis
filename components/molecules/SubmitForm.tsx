@@ -1,5 +1,5 @@
 import * as CommonTypes from "@/utils/CommonTypes"
-import { MouseEvent } from "react"
+import { JSX, MouseEvent } from "react"
 import { BaseButton, ButtonColor } from "@/components/atoms/BaseButton"
 
 interface SubmitFormProps {

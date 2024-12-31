@@ -1,4 +1,5 @@
 import * as CommonTypes from "@/utils/CommonTypes"
+import { JSX } from "react"
 import { UseFormRegisterReturn, FieldError } from "react-hook-form"
 import { tv } from "tailwind-variants"
 import { match } from "ts-pattern"
@@ -39,6 +40,12 @@ export const BaseTextField = ({
   textType = CommonTypes.TextType.TEXT,
   classes = [],
 }: TextField): JSX.Element => {
+  const widthSizeList = {
+    [CommonTypes.SizeType.LARGE]: "max-w-lg",
+    [CommonTypes.SizeType.MEDIUM]: "max-w-md",
+    [CommonTypes.SizeType.SMALL]: "max-w-sm",
+    [CommonTypes.SizeType.TINY]: "max-w-xs",
+  }
   const styleSettingClasses = tv({
     base: "input input-bordered flex items-center gap-2 w-full",
     variants: {
@@ -57,12 +64,7 @@ export const BaseTextField = ({
         [CommonTypes.SizeType.SMALL]: "input-sm",
         [CommonTypes.SizeType.TINY]: "input-xs",
       },
-      widthSize: {
-        [CommonTypes.SizeType.LARGE]: "max-w-lg",
-        [CommonTypes.SizeType.MEDIUM]: "max-w-md",
-        [CommonTypes.SizeType.SMALL]: "max-w-sm",
-        [CommonTypes.SizeType.TINY]: "max-w-xs",
-      },
+      widthSize: widthSizeList,
     },
   })
   const defineClasses = tv({
@@ -95,12 +97,8 @@ export const BaseTextField = ({
   }
   return (
     <>
-      {hintText && (
-        <div className="label">
-          <span className="label-text">{hintText}</span>
-        </div>
-      )}
-      <label>
+      <label className={"form-control w-full " + widthSizeList[widthSize]}>
+        <div className="label">{hintText && <span className="label-text">{hintText}</span>}</div>
         <input
           {...register}
           id={htmlForId}
@@ -113,14 +111,12 @@ export const BaseTextField = ({
           })}
           disabled={disabled}
         />
-      </label>
-      {errorMessage && (
         <div className="label">
-          <span className={"label-text-alt " + validationMessageColor()}>
-            {validationMessageWithIcon()}
+          <span className={"label-text-alt h-6 min-h-6 " + validationMessageColor()}>
+            {errorMessage ? validationMessageWithIcon() : <>&nbsp;</>}
           </span>
         </div>
-      )}
+      </label>
     </>
   )
 }
