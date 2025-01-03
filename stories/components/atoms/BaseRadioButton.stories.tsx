@@ -105,5 +105,39 @@ export const CheckedEvent: Story = {
     },
   },
 }
+export const MultiRadioButtons: Story = {
+  render: () => {
+    const color = GlobalType.ColorType.SECONDARY
+    const nameValue = "multi-radio-buttons"
+    return (
+      <div>
+        <BaseRadioButton
+          htmlForId="multi-radio-buttons-1"
+          label="value 1"
+          color={color}
+          onChange={() => {}}
+          value="1"
+          name={nameValue}
+        />
+        <BaseRadioButton
+          htmlForId="multi-radio-buttons-2"
+          label="value 2"
+          color={color}
+          onChange={() => {}}
+          value="2"
+          name={nameValue}
+        />
+        <BaseRadioButton
+          htmlForId="multi-radio-buttons-3"
+          label="value 3"
+          color={color}
+          onChange={() => {}}
+          value="3"
+          name={nameValue}
+        />
+      </div>
+    )
+  },
+}
 
 export default meta

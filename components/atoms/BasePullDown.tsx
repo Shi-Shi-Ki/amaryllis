@@ -43,7 +43,7 @@ export const BasePullDown = ({
   classes = [],
 }: PullDown): JSX.Element => {
   const styleSettingClasses = tv({
-    base: "",
+    base: "select w-full",
     variants: {
       color: {
         [CommonTypes.ColorType.PRIMARY]: "select-primary",

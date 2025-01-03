@@ -12,7 +12,8 @@ const ThemeContext = createContext<Theme>({
   setTheme: () => {},
 })
 
-export default function ThemeChanger({ children }: { children: React.ReactNode }) {
+//export default function ThemeChanger({ children }: { children: React.ReactNode }) {
+export default function ThemeChanger() {
   const [theme, setTheme] = useState<themeType>(ThemeType.LIGHT)
 
   const handleToggle = (e: { target: { checked: boolean } }) => {
@@ -41,14 +42,11 @@ export default function ThemeChanger({ children }: { children: React.ReactNode }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className="text-center md:text-left text-lg mt-5 md:pl-8">
-        <label className="swap swap-rotate">
-          <input type="checkbox" onChange={handleToggle} />
-          <span className="swap-off material-icons">light_mode</span>
-          <span className="swap-on material-icons">dark_mode</span>
-        </label>
-        {children}
-      </div>
+      <label className="swap swap-rotate">
+        <input type="checkbox" onChange={handleToggle} />
+        <span className="swap-off material-icons">light_mode</span>
+        <span className="swap-on material-icons">dark_mode</span>
+      </label>
     </ThemeContext.Provider>
   )
 }

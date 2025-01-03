@@ -15,7 +15,7 @@ interface Frame {
   htmlForId: string
   children: React.ReactNode
   borderColor: BorderColor
-  widthSize: CommonTypes.sizeType
+  widthSize?: CommonTypes.sizeType
   classes?: string[]
 }
 
@@ -26,8 +26,8 @@ export const BaseFrame = ({
   widthSize,
   classes = [],
 }: Frame): JSX.Element => {
-  const presetWidthSize = (width: CommonTypes.sizeType) =>
-    match<CommonTypes.sizeType, CSSProperties>(width)
+  const presetWidthSize = (width: CommonTypes.sizeType | undefined) =>
+    match<CommonTypes.sizeType | undefined, CSSProperties>(width)
       .with(CommonTypes.SizeType.TINY, () => ({ width: 380 }))
       .with(CommonTypes.SizeType.SMALL, () => ({ width: 450 }))
       .with(CommonTypes.SizeType.MEDIUM, () => ({ width: 520 }))
@@ -35,7 +35,7 @@ export const BaseFrame = ({
       .otherwise(() => ({}))
 
   const styleSettingClasses = tv({
-    base: "rounded-lg p-3 outline outline-5",
+    base: "rounded-lg p-5 outline outline-5",
     variants: {
       color: {
         [CommonTypes.ColorType.DEFAULT]: "outline-default",

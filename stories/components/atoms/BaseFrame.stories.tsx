@@ -93,7 +93,7 @@ export const SetBackGroundColor: Story = {
   args: {
     htmlForId: "set-background-color",
     borderColor: CommonTypes.ColorType.PRIMARY,
-    classes: ["bg-gray-300"],
+    classes: ["bg-base-300", "place-content-center"],
     children: (
       <>
         <div>test_1</div>

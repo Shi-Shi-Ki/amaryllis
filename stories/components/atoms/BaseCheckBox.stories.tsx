@@ -106,5 +106,17 @@ export const CheckedEvent: Story = {
     },
   },
 }
+export const MultiCheckBoxes: Story = {
+  render: () => {
+    const color = GlobalType.ColorType.SECONDARY
+    return (
+      <div>
+        <BaseCheckBox htmlForId="multi-checkboxes-1" color={color} label="value 1" value="1" />
+        <BaseCheckBox htmlForId="multi-checkboxes-2" color={color} label="value 2" value="2" />
+        <BaseCheckBox htmlForId="multi-checkboxes-3" color={color} label="value 3" value="3" />
+      </div>
+    )
+  },
+}
 
 export default meta

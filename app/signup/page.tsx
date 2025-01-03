@@ -15,13 +15,17 @@ export default function About() {
   }>()
   return (
     <>
-      <form>
-        <BaseFrame
-          htmlForId="login-form"
-          borderColor={CommonTypes.ColorType.PRIMARY}
-          widthSize={CommonTypes.SizeType.TINY}
-        >
-          <div className="user-name-form max-w-md">
+      <div>test</div>
+      <div>
+        <form>
+          <BaseFrame
+            htmlForId="login-form"
+            borderColor={CommonTypes.ColorType.PRIMARY}
+            classes={["flex", "flex-col", "items-center"]}
+          >
+            <div>
+              <h1 className="py-8 text-2xl">ログイン</h1>
+            </div>
             <BaseTextField
               htmlForId="user-name"
               color={CommonTypes.ColorType.PRIMARY}
@@ -31,8 +35,6 @@ export default function About() {
               })}
               placeholder="ユーザー名"
             />
-          </div>
-          <div className="password-form max-w-md">
             <BaseTextField
               htmlForId="password"
               color={CommonTypes.ColorType.PRIMARY}
@@ -44,9 +46,9 @@ export default function About() {
               placeholder="パスワード"
               textType="password"
             />
-          </div>
-        </BaseFrame>
-      </form>
+          </BaseFrame>
+        </form>
+      </div>
     </>
   )
 }
