@@ -1,9 +1,5 @@
 import "../globals.css"
 import "material-icons/iconfont/material-icons.css"
-import { Inter } from "next/font/google"
-import ThemeChanger from "@/contexts/ThemeChanger"
-
-const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "Create Next App/signup",
