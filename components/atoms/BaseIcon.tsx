@@ -1,6 +1,6 @@
 import * as CommonTypes from "@/utils/CommonTypes"
 import { v7 as uuid } from "uuid"
-import { JSX } from "react"
+import { JSX, MouseEvent } from "react"
 import { tv } from "tailwind-variants"
 
 export type IconColor =
@@ -13,12 +13,22 @@ export type IconColor =
 
 interface BaseIcon {
   iconName: string
-  iconColor?: IconColor
   htmlForId?: string
+  classes?: string[]
+  onClick?: (event: MouseEvent<HTMLSpanElement>) => void
+  disabled?: boolean
+  iconColor?: IconColor
 }
 
-export const BaseIcon = ({ iconName, iconColor, htmlForId }: BaseIcon): JSX.Element => {
-  const classes = tv({
+export const BaseIcon = ({
+  iconName,
+  htmlForId,
+  classes = [],
+  onClick = () => {},
+  disabled = false,
+  iconColor,
+}: BaseIcon): JSX.Element => {
+  const styleSettingClasses = tv({
     base: "material-icons",
     variants: {
       color: {
@@ -31,12 +41,21 @@ export const BaseIcon = ({ iconName, iconColor, htmlForId }: BaseIcon): JSX.Elem
       },
     },
   })
+  const defineClasses = tv({
+    extend: styleSettingClasses,
+    base: classes.join(" "),
+  })
+  const handleSubmit = (event: MouseEvent<HTMLSpanElement>) => {
+    if (onClick && !disabled) {
+      onClick(event)
+    }
+  }
   if (!htmlForId) {
     htmlForId = uuid()
   }
 
   return (
-    <span id={htmlForId} className={classes({ color: iconColor })}>
+    <span id={htmlForId} className={defineClasses({ color: iconColor })} onClick={handleSubmit}>
       {iconName}
     </span>
   )

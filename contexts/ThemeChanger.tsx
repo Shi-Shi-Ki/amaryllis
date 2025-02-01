@@ -12,7 +12,6 @@ const ThemeContext = createContext<Theme>({
   setTheme: () => {},
 })
 
-//export default function ThemeChanger({ children }: { children: React.ReactNode }) {
 export default function ThemeChanger() {
   const [theme, setTheme] = useState<themeType>(ThemeType.LIGHT)
 
@@ -42,7 +41,7 @@ export default function ThemeChanger() {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <label className="swap swap-rotate">
+      <label className="swap swap-rotate btn btn-circle btn-sm m-2">
         <input type="checkbox" onChange={handleToggle} />
         <span className="swap-off material-icons">light_mode</span>
         <span className="swap-on material-icons">dark_mode</span>
