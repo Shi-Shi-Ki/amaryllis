@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 /**
  * テーマタイプ
  */
@@ -13,19 +15,33 @@ export type themeType = (typeof ThemeType)[keyof typeof ThemeType]
  */
 export const ColorType = {
   DEFAULT: "default",
-  OUTLINE_DEFAULT: "outline_default",
   NEUTRAL: "neutral",
   PRIMARY: "primary",
-  OUTLINE_PRIMARY: "outline_primary",
   SECONDARY: "secondary",
-  OUTLINE_SECONDARY: "outline_secondary",
   ACCENT: "accent",
-  OUTLINE_ACCENT: "outline_accent",
   GHOST: "ghost",
-  LINK: "link",
+  INFO: "info",
+  SUCCESS: "success",
+  WARNING: "warning",
   ERROR: "error",
+  OUTLINE_DEFAULT: "outline_default",
+  OUTLINE_PRIMARY: "outline_primary",
+  OUTLINE_SECONDARY: "outline_secondary",
+  OUTLINE_ACCENT: "outline_accent",
+  LINK: "link",
 } as const
 export type colorType = (typeof ColorType)[keyof typeof ColorType]
+
+/**
+ * アウトライン系の配色タイプ
+ */
+export const ColorTypeByOutLines = {
+  OUTLINE_DEFAULT: "outline_default",
+  OUTLINE_PRIMARY: "outline_primary",
+  OUTLINE_SECONDARY: "outline_secondary",
+  OUTLINE_ACCENT: "outline_accent",
+} as const
+export type colorTypeByOutLines = (typeof ColorTypeByOutLines)[keyof typeof ColorTypeByOutLines]
 
 /**
  * サイズタイプ

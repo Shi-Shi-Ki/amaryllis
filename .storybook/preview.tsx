@@ -12,8 +12,10 @@ const preview: Preview = {
       },
     },
   },
-  globals: {
-    themes: ["light", "dark"],
+  globalTypes: {
+    themes: {
+      defaultValue: ["light", "dark"],
+    },
   },
 }
 

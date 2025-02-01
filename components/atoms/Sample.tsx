@@ -1,3 +1,8 @@
 export const Sample = () => {
-  return <button>sample</button>
+  return (
+    <main>
+      <h1>Next.js+Jestのサンプルサプリ</h1>
+      <p>設定がすごく楽になりました。</p>
+    </main>
+  )
 }

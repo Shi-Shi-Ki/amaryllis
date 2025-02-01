@@ -69,6 +69,7 @@ const meta: Meta<typeof BaseButton> = {
     buttonType: GlobalType.ButtonType.BUTTON,
     size: GlobalType.SizeType.SMALL,
     disabled: false,
+    classes: [],
     shape: GlobalType.ShapeType.NONE,
   },
   parameters: {
@@ -125,6 +126,16 @@ export const Ghost: Story = {
     htmlForId: "ghost",
     color: GlobalType.ColorType.GHOST,
     children: "Ghost",
+  },
+}
+
+export const AppendClasses: Story = {
+  args: {
+    htmlForId: "append-classes",
+    color: GlobalType.ColorType.PRIMARY,
+    size: GlobalType.SizeType.LARGE,
+    children: "AppendClasses",
+    classes: ["dummy-1", "dummy-2", "dummy-2"],
   },
 }
 
