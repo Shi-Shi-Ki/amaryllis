@@ -12,11 +12,14 @@ const preview: Preview = {
       },
     },
   },
+
   globalTypes: {
     themes: {
       defaultValue: ["light", "dark"],
     },
   },
+
+  tags: ["autodocs"]
 }
 
 export default preview

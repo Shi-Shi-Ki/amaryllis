@@ -2,6 +2,7 @@ import type { StorybookConfig } from "@storybook/nextjs"
 import path from "path"
 const config: StorybookConfig = {
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|ts|tsx)"],
+
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -15,15 +16,19 @@ const config: StorybookConfig = {
       },
     },
     "storybook-addon-theme-changer",
+    "@storybook/addon-mdx-gfm",
+    "@chromatic-com/storybook"
   ],
+
   framework: {
     name: "@storybook/nextjs",
     options: {},
   },
-  docs: {
-    autodocs: "tag",
-  },
+
+  docs: {},
+
   staticDirs: ["../public"],
+
   // https://storybook.js.org/docs/react/builders/webpack#troubleshooting
   webpackFinal: async (config) => {
     if (config.resolve) {
@@ -34,9 +39,14 @@ const config: StorybookConfig = {
     }
     return config
   },
+
   previewHead: (head) => `
     ${head}
     ${""}
   `,
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript"
+  }
 }
 export default config
