@@ -15,11 +15,10 @@ export default function ThemeChanger({
   const { theme, changer } = useContext(ThemeContext)
 
   const handleToggle = (e: { target: { checked: boolean } }) => {
-    console.log(`*** checked: ${e.target.checked}`)
     if (e.target.checked) {
-      changer("dark")
+      changer(ThemeType.DARK)
     } else {
-      changer("light")
+      changer(ThemeType.LIGHT)
     }
   }
 

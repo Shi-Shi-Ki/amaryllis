@@ -11,6 +11,15 @@ export const ThemeType = {
 export type themeType = (typeof ThemeType)[keyof typeof ThemeType]
 
 /**
+ * テーマタイプの検証
+ * @param value
+ * @returns
+ */
+export const isValidThemeType = (value: string): value is themeType => {
+  return Object.values(ThemeType).includes(value as themeType)
+}
+
+/**
  * 配色タイプ
  */
 export const ColorType = {

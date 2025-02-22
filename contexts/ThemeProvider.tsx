@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState, createContext, useCallback } from "react"
-import { themeType, ThemeType } from "@/utils/CommonTypes"
+import { themeType, ThemeType, isValidThemeType } from "@/utils/CommonTypes"
 import Cookies from "js-cookie"
 
 interface Theme {
@@ -18,31 +18,24 @@ export default function ThemeProvider({
   selectedTheme,
 }: {
   children: React.ReactNode
-  selectedTheme: string
+  selectedTheme: themeType
 }) {
-  const [theme, setTheme] = useState<themeType>(
-    selectedTheme === "light" ? ThemeType.LIGHT : ThemeType.DARK
-  )
+  const [theme, setTheme] = useState<themeType>(selectedTheme)
+
   const changer = useCallback((theme: themeType) => {
-    console.log("useCallback theme", theme)
-    const newTheme = theme === ThemeType.LIGHT ? ThemeType.LIGHT : ThemeType.DARK
-    console.log("useCallback newTheme", newTheme)
-    setTheme(newTheme)
-    Cookies.set("theme", newTheme)
-    document.documentElement.setAttribute("data-theme", newTheme)
+    console.log("[ThemeProvider] call changer.")
+    setTheme(theme)
+    Cookies.set("theme", theme)
+    document.documentElement.setAttribute("data-theme", theme)
   }, [])
 
   useEffect(() => {
+    console.log("[ThemeProvider] call useEffect.")
     const cookieTheme = Cookies.get("theme")
-    console.log("useEffect cookieTheme", cookieTheme)
-    if (cookieTheme) {
-      console.log("get cookieTheme", cookieTheme)
-      const initialTheme =
-        cookieTheme === ThemeType.LIGHT.toString() ? ThemeType.LIGHT : ThemeType.DARK
-      setTheme(initialTheme)
-      document.documentElement.setAttribute("data-theme", initialTheme)
+    if (cookieTheme && isValidThemeType(cookieTheme)) {
+      setTheme(cookieTheme)
+      document.documentElement.setAttribute("data-theme", cookieTheme)
     } else {
-      console.log("no set cookieTheme", theme)
       document.documentElement.setAttribute("data-theme", theme)
     }
   }, [theme])

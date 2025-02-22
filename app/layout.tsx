@@ -5,6 +5,7 @@ import NextAuthProvider from "@/providers/NextAuth"
 import { auth } from "@/auth"
 import ThemeProvider from "@/contexts/ThemeProvider"
 import { cookies } from "next/headers"
+import { ThemeType, isValidThemeType } from "@/utils/CommonTypes"
 
 export const metadata = {
   title: "Create Next App",
@@ -13,8 +14,13 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
-  const theme = (await cookies()).get("theme")?.value ?? ""
-  console.log("layout.tsx theme", theme)
+  const nowSetTheme = (await cookies()).get("theme")?.value
+  const theme = () => {
+    if (nowSetTheme && isValidThemeType(nowSetTheme)) {
+      return nowSetTheme
+    }
+    return ThemeType.NONE
+  }
 
   return (
     <html lang="ja">
@@ -24,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <div className="drawer-content flex flex-col">
             {/* Navbar */}
             <NextAuthProvider>
-              <ThemeProvider selectedTheme={theme}>
+              <ThemeProvider selectedTheme={theme()}>
                 <ThemeChanger session={session}>
                   {/* Page content here */}
                   {children}
