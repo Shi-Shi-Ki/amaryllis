@@ -19,15 +19,6 @@ export default function About() {
 
   return (
     <>
-      <div className="relative h-full overflow-hidden">
-        <Image
-          src="/accounts/signin-signup_front.jpg"
-          alt="signin signup front image"
-          fill={true}
-          style={{ objectFit: "cover" }}
-          className="rounded-lg"
-        />
-      </div>
       <div>
         <form>
           <BaseFrame
@@ -37,7 +28,7 @@ export default function About() {
           >
             <div className="flex flex-col items-center">
               <div>
-                <h1 className="py-8 text-2xl">新規登録</h1>
+                <h1 className="py-8 text-2xl">ログイン</h1>
               </div>
               <BaseTextField
                 htmlForId="user-name"
@@ -61,18 +52,18 @@ export default function About() {
               />
               <div className="form-control w-full max-w-xs">
                 <BaseButton
-                  htmlForId="sign_up_button"
+                  htmlForId="sign_in_button"
                   size={CommonTypes.SizeType.MEDIUM}
                   color={CommonTypes.ColorType.PRIMARY}
                   onClick={() => {}}
                 >
-                  sign up
+                  sign in
                 </BaseButton>
               </div>
               <div className="pt-2">
                 <p>
-                  ログインは&nbsp;
-                  <a className="link link-primary" href="/signin">
+                  ユーザー登録は&nbsp;
+                  <a className="link link-primary" href="/signup">
                     こちら
                   </a>
                 </p>
@@ -97,6 +88,15 @@ export default function About() {
             </div>
           </BaseFrame>
         </form>
+      </div>
+      <div className="relative h-full overflow-hidden">
+        <Image
+          src="/accounts/signin-signup_front.jpg"
+          alt="signin signup front image"
+          fill={true}
+          style={{ objectFit: "cover" }}
+          className="rounded-lg"
+        />
       </div>
     </>
   )

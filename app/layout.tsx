@@ -1,9 +1,11 @@
 import "./globals.css"
 import "material-icons/iconfont/material-icons.css"
+import { SessionProvider } from "next-auth/react"
 import ThemeChanger from "@/contexts/ThemeChanger"
-import NextAuthProvider from "@/providers/NextAuth"
-import { CommonHeader } from "./CommonHeader"
 import { auth } from "@/auth"
+import ThemeProvider from "@/contexts/ThemeProvider"
+import { cookies } from "next/headers"
+import { ThemeType, isIncludesType } from "@/utils/CommonTypes"
 
 export const metadata = {
   title: "Create Next App",
@@ -12,6 +14,13 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
+  const nowSetTheme = (await cookies()).get("theme")?.value
+  const theme = () => {
+    if (nowSetTheme && isIncludesType(ThemeType, nowSetTheme)) {
+      return nowSetTheme
+    }
+    return ThemeType.NONE
+  }
 
   return (
     <html lang="ja">
@@ -20,40 +29,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             {/* Navbar */}
-            <NextAuthProvider>
-              <div className="navbar bg-base-300 w-full mb-5">
-                <div className="flex-none lg:hidden">
-                  <label
-                    htmlFor="my-drawer-3"
-                    aria-label="open sidebar"
-                    className="btn btn-square btn-ghost"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      className="inline-block h-6 w-6 stroke-current"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                      ></path>
-                    </svg>
-                  </label>
-                </div>
-                <div className="mx-2 flex-1 px-2">
-                  Navbar Title ({session && session.user?.email})
-                </div>
-                <div className="flex-none">
-                  <CommonHeader />
-                  <ThemeChanger />
-                </div>
-              </div>
-              {/* Page content here */}
-              {children}
-            </NextAuthProvider>
+            <SessionProvider>
+              <ThemeProvider selectedTheme={theme()}>
+                <ThemeChanger session={session}>
+                  {/* Page content here */}
+                  {children}
+                </ThemeChanger>
+              </ThemeProvider>
+            </SessionProvider>
           </div>
           <div className="drawer-side">
             <label

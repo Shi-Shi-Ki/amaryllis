@@ -1,53 +1,46 @@
 "use client"
-import { Dispatch, SetStateAction, useEffect, useState, createContext, useContext } from "react"
-import { themeType, ThemeType } from "@/utils/CommonTypes"
-import { match } from "ts-pattern"
+import { useContext } from "react"
+import { CommonHeader } from "@/app/CommonHeader"
+import { Session } from "next-auth"
+import { ThemeContext } from "./ThemeProvider"
+import { ThemeType } from "@/utils/CommonTypes"
 
-interface Theme {
-  theme: themeType
-  setTheme: Dispatch<SetStateAction<themeType>>
-}
-const ThemeContext = createContext<Theme>({
-  theme: ThemeType.LIGHT,
-  setTheme: () => {},
-})
-
-export default function ThemeChanger() {
-  const [theme, setTheme] = useState<themeType>(ThemeType.LIGHT)
+export default function ThemeChanger({
+  children,
+  session,
+}: {
+  children: React.ReactNode
+  session: Session | null
+}) {
+  const { theme, changer } = useContext(ThemeContext)
 
   const handleToggle = (e: { target: { checked: boolean } }) => {
     if (e.target.checked) {
-      setTheme(ThemeType.DARK)
+      changer(ThemeType.DARK)
     } else {
-      setTheme(ThemeType.LIGHT)
+      changer(ThemeType.LIGHT)
     }
   }
 
-  useEffect(() => {
-    const localTheme = match(localStorage.getItem("theme"))
-      .with(ThemeType.LIGHT, () => ThemeType.LIGHT)
-      .with(ThemeType.DARK, () => ThemeType.DARK)
-      .otherwise(() => {
-        console.error(`set theme error... (localTheme: ${localTheme})`)
-        return ThemeType.NONE
-      })
-    setTheme(localTheme)
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme)
-    document.documentElement.setAttribute("data-theme", theme)
-  }, [theme])
-
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <label className="swap swap-rotate btn btn-circle btn-sm m-2">
-        <input type="checkbox" onChange={handleToggle} />
-        <span className="swap-off material-icons">light_mode</span>
-        <span className="swap-on material-icons">dark_mode</span>
-      </label>
-    </ThemeContext.Provider>
+    <>
+      <div data-theme={theme}>
+        <div className="navbar bg-base-300 w-full mb-5">
+          <div className="mx-2 flex-1 px-2">
+            Navbar Title {session && `(${session.user?.email})`}
+          </div>
+          <div className="flex-none">
+            {session && <CommonHeader />}
+            <label className="swap swap-rotate btn btn-circle btn-sm m-2">
+              <input type="checkbox" checked={theme === ThemeType.DARK} onChange={handleToggle} />
+              <span className="swap-off material-icons">light_mode</span>
+              <span className="swap-on material-icons">dark_mode</span>
+            </label>
+          </div>
+        </div>
+        {/* Page content here */}
+        {children}
+      </div>
+    </>
   )
 }
-
-export const useTheme = () => useContext(ThemeContext)
