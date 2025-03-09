@@ -21,7 +21,11 @@ export default function About() {
     <>
       <div>
         <form>
-          <BaseFrame htmlForId="login-form" borderColor={CommonTypes.ColorType.PRIMARY}>
+          <BaseFrame
+            htmlForId="login-form"
+            borderColor={CommonTypes.ColorType.PRIMARY}
+            classes={["relative", "z-10"]}
+          >
             <div className="flex flex-col items-center">
               <div>
                 <h1 className="py-8 text-2xl">ログイン</h1>
@@ -85,7 +89,15 @@ export default function About() {
           </BaseFrame>
         </form>
       </div>
-      <div>test</div>
+      <div className="relative h-full overflow-hidden">
+        <Image
+          src="/accounts/signin-signup_front.jpg"
+          alt="signin signup front image"
+          fill={true}
+          style={{ objectFit: "cover" }}
+          className="rounded-lg"
+        />
+      </div>
     </>
   )
 }

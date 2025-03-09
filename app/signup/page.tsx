@@ -19,10 +19,22 @@ export default function About() {
 
   return (
     <>
-      <div>test</div>
+      <div className="relative h-full overflow-hidden">
+        <Image
+          src="/accounts/signin-signup_front.jpg"
+          alt="signin signup front image"
+          fill={true}
+          style={{ objectFit: "cover" }}
+          className="rounded-lg"
+        />
+      </div>
       <div>
         <form>
-          <BaseFrame htmlForId="login-form" borderColor={CommonTypes.ColorType.PRIMARY}>
+          <BaseFrame
+            htmlForId="login-form"
+            borderColor={CommonTypes.ColorType.PRIMARY}
+            classes={["relative", "z-10"]}
+          >
             <div className="flex flex-col items-center">
               <div>
                 <h1 className="py-8 text-2xl">新規登録</h1>
