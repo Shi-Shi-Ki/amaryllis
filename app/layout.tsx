@@ -1,7 +1,7 @@
 import "./globals.css"
 import "material-icons/iconfont/material-icons.css"
+import { SessionProvider } from "next-auth/react"
 import ThemeChanger from "@/contexts/ThemeChanger"
-import NextAuthProvider from "@/providers/NextAuth"
 import { auth } from "@/auth"
 import ThemeProvider from "@/contexts/ThemeProvider"
 import { cookies } from "next/headers"
@@ -29,14 +29,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             {/* Navbar */}
-            <NextAuthProvider>
+            <SessionProvider>
               <ThemeProvider selectedTheme={theme()}>
                 <ThemeChanger session={session}>
                   {/* Page content here */}
                   {children}
                 </ThemeChanger>
               </ThemeProvider>
-            </NextAuthProvider>
+            </SessionProvider>
           </div>
           <div className="drawer-side">
             <label
