@@ -11,15 +11,6 @@ export const ThemeType = {
 export type themeType = (typeof ThemeType)[keyof typeof ThemeType]
 
 /**
- * テーマタイプの検証
- * @param value
- * @returns
- */
-export const isValidThemeType = (value: string): value is themeType => {
-  return Object.values(ThemeType).includes(value as themeType)
-}
-
-/**
  * 配色タイプ
  */
 export const ColorType = {
@@ -100,3 +91,15 @@ export const TextType = {
   PASSWORD: "password",
 } as const
 export type textType = (typeof TextType)[keyof typeof TextType]
+
+/**
+ * カスタムタイプの要素検証
+ * @param value
+ * @returns
+ */
+export const isIncludesType = <T extends Record<string, string>, K extends T[keyof T]>(
+  obj: T,
+  value: string
+): value is K => {
+  return Object.values(obj).includes(value as K)
+}

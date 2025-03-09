@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState, createContext, useCallback } from "react"
-import { themeType, ThemeType, isValidThemeType } from "@/utils/CommonTypes"
+import { themeType, ThemeType, isIncludesType } from "@/utils/CommonTypes"
 import Cookies from "js-cookie"
 
 interface Theme {
@@ -25,20 +25,18 @@ export default function ThemeProvider({
   const changer = useCallback((theme: themeType) => {
     console.log("[ThemeProvider] call changer.")
     setTheme(theme)
-    Cookies.set("theme", theme)
+    Cookies.set("theme", theme, { secure: true })
     document.documentElement.setAttribute("data-theme", theme)
   }, [])
 
   useEffect(() => {
     console.log("[ThemeProvider] call useEffect.")
     const cookieTheme = Cookies.get("theme")
-    if (cookieTheme && isValidThemeType(cookieTheme)) {
+    if (cookieTheme && isIncludesType(ThemeType, cookieTheme)) {
       setTheme(cookieTheme)
       document.documentElement.setAttribute("data-theme", cookieTheme)
-    } else {
-      document.documentElement.setAttribute("data-theme", theme)
     }
-  }, [theme])
+  }, [])
 
   return <ThemeContext.Provider value={{ theme, changer }}>{children}</ThemeContext.Provider>
 }

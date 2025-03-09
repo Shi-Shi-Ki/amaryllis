@@ -5,7 +5,7 @@ import NextAuthProvider from "@/providers/NextAuth"
 import { auth } from "@/auth"
 import ThemeProvider from "@/contexts/ThemeProvider"
 import { cookies } from "next/headers"
-import { ThemeType, isValidThemeType } from "@/utils/CommonTypes"
+import { ThemeType, isIncludesType } from "@/utils/CommonTypes"
 
 export const metadata = {
   title: "Create Next App",
@@ -16,7 +16,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await auth()
   const nowSetTheme = (await cookies()).get("theme")?.value
   const theme = () => {
-    if (nowSetTheme && isValidThemeType(nowSetTheme)) {
+    if (nowSetTheme && isIncludesType(ThemeType, nowSetTheme)) {
       return nowSetTheme
     }
     return ThemeType.NONE
