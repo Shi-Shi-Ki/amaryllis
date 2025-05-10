@@ -3,11 +3,14 @@ import * as CommonTypes from "@/utils/CommonTypes"
 import BaseTextField from "@/components/atoms/BaseTextField"
 import { useForm } from "react-hook-form"
 import BaseFrame from "@/components/atoms/BaseFrame"
-import { signIn } from "next-auth/react"
 import Image from "next/image"
 import BaseButton from "@/components/atoms/BaseButton"
+import { useGoogleLogin } from "@react-oauth/google"
+import { useAuth } from "@/components/AuthProvider"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
-export default function About() {
+export default function Signin() {
   const {
     register,
     formState: { errors },
@@ -16,6 +19,41 @@ export default function About() {
     userName: string
     password: string
   }>()
+
+  const router = useRouter()
+  const { isAuthenticated, login } = useAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log("route dashboard.")
+      router.push("/dashboard")
+    }
+  }, [isAuthenticated, router])
+
+  // useGoogleLogin フックを使って認証フローを開始
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code", // 認可コードフローを指定
+    onSuccess: async (codeResponse) => {
+      console.log("Auth Code:", codeResponse.code)
+      try {
+        // todo
+        login({ email: "temp_user@example.com" })
+      } catch (e) {
+        console.error("Error sending code to API:", e)
+        alert("ログイン処理中にエラーが発生しました。")
+      }
+    },
+    onError: (errorResponse) => {
+      console.error("Google Login Failed:", errorResponse)
+      alert("Googleログインに失敗しました。")
+    },
+  })
+
+  // ログイン済みの場合は、リダイレクトが完了するまで何も表示しない
+  if (isAuthenticated) {
+    console.log("* before login.")
+    return null
+  }
 
   return (
     <>
@@ -82,7 +120,7 @@ export default function About() {
                 alt="google login"
                 width={32}
                 height={32}
-                onClick={() => signIn("google", {}, { prompt: "login" })}
+                onClick={() => googleLogin()}
                 priority
               />
             </div>

@@ -1,11 +1,11 @@
 import "./globals.css"
 import "material-icons/iconfont/material-icons.css"
-import { SessionProvider } from "next-auth/react"
 import ThemeChanger from "@/contexts/ThemeChanger"
-import { auth } from "@/auth"
 import ThemeProvider from "@/contexts/ThemeProvider"
 import { cookies } from "next/headers"
 import { ThemeType, isIncludesType } from "@/utils/CommonTypes"
+import { GoogleOAuthProvider } from "@react-oauth/google"
+import { AuthProvider } from "@/components/AuthProvider"
 
 export const metadata = {
   title: "Create Next App",
@@ -13,7 +13,6 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth()
   const nowSetTheme = (await cookies()).get("theme")?.value
   const theme = () => {
     if (nowSetTheme && isIncludesType(ThemeType, nowSetTheme)) {
@@ -21,6 +20,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     }
     return ThemeType.NONE
   }
+  const googleClientId = process.env.AUTH_GOOGLE_ID!
 
   return (
     <html lang="ja">
@@ -29,14 +29,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col">
             {/* Navbar */}
-            <SessionProvider>
-              <ThemeProvider selectedTheme={theme()}>
-                <ThemeChanger session={session}>
-                  {/* Page content here */}
-                  {children}
-                </ThemeChanger>
-              </ThemeProvider>
-            </SessionProvider>
+            <AuthProvider>
+              <GoogleOAuthProvider clientId={googleClientId}>
+                <ThemeProvider selectedTheme={theme()}>
+                  <ThemeChanger>
+                    {/* Page content here */}
+                    {children}
+                  </ThemeChanger>
+                </ThemeProvider>
+              </GoogleOAuthProvider>
+            </AuthProvider>
           </div>
           <div className="drawer-side">
             <label

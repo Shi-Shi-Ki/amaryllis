@@ -3,11 +3,10 @@ import * as CommonTypes from "@/utils/CommonTypes"
 import BaseTextField from "@/components/atoms/BaseTextField"
 import { useForm } from "react-hook-form"
 import BaseFrame from "@/components/atoms/BaseFrame"
-import { signIn } from "next-auth/react"
 import Image from "next/image"
 import BaseButton from "@/components/atoms/BaseButton"
 
-export default function About() {
+export default function Signup() {
   const {
     register,
     formState: { errors },
@@ -91,7 +90,7 @@ export default function About() {
                 alt="google login"
                 width={32}
                 height={32}
-                onClick={() => signIn("google", {}, { prompt: "login" })}
+                onClick={() => {}}
                 priority
               />
             </div>

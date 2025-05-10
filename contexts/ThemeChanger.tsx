@@ -1,17 +1,13 @@
 "use client"
 import { useContext } from "react"
 import { CommonHeader } from "@/app/CommonHeader"
-import { Session } from "next-auth"
 import { ThemeContext } from "./ThemeProvider"
 import { ThemeType } from "@/utils/CommonTypes"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/components/AuthProvider"
 
-export default function ThemeChanger({
-  children,
-  session,
-}: {
-  children: React.ReactNode
-  session: Session | null
-}) {
+export default function ThemeChanger({ children }: { children: React.ReactNode }) {
   const { theme, changer } = useContext(ThemeContext)
 
   const handleToggle = (e: { target: { checked: boolean } }) => {
@@ -22,15 +18,28 @@ export default function ThemeChanger({
     }
   }
 
+  const router = useRouter()
+  const { user, isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/signin")
+    }
+  }, [isAuthenticated, router])
+
+  // ログイン済みの場合はコンテンツを表示
+  // if (!isAuthenticated) {
+  //   console.log("* ThemeChanger isAuthenticated.")
+  //   return null // リダイレクトが完了するまで何も表示しない
+  // }
+
   return (
     <>
       <div data-theme={theme}>
         <div className="navbar bg-base-300 w-full mb-5">
-          <div className="mx-2 flex-1 px-2">
-            Navbar Title {session && `(${session.user?.email})`}
-          </div>
+          <div className="mx-2 flex-1 px-2">Navbar Title ({user && user.email})</div>
           <div className="flex-none">
-            {session && <CommonHeader />}
+            {<CommonHeader />}
             <label className="swap swap-rotate btn btn-circle btn-sm m-2">
               <input type="checkbox" checked={theme === ThemeType.DARK} onChange={handleToggle} />
               <span className="swap-off material-icons">light_mode</span>
