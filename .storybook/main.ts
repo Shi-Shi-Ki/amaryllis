@@ -17,7 +17,7 @@ const config: StorybookConfig = {
     },
     "storybook-addon-theme-changer",
     "@storybook/addon-mdx-gfm",
-    "@chromatic-com/storybook"
+    "@chromatic-com/storybook",
   ],
 
   framework: {
@@ -46,7 +46,7 @@ const config: StorybookConfig = {
   `,
 
   typescript: {
-    reactDocgen: "react-docgen-typescript"
-  }
+    reactDocgen: "react-docgen-typescript",
+  },
 }
 export default config
