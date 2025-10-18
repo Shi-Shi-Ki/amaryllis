@@ -1,10 +1,10 @@
 "use client"
 import * as CommonTypes from "@/utils/CommonTypes"
 import { useForm, SubmitHandler } from "react-hook-form"
-import { BaseButton } from "@/components/atoms/BaseButton"
-import { BaseTextField } from "@/components/atoms/BaseTextField"
-import { BaseIcon } from "@/components/atoms/BaseIcon"
-import { BasePullDown, PullDownElement } from "@/components/atoms/BasePullDown"
+import { BaseButton } from "@/components/atoms/bk/BaseButton"
+import { BaseTextField } from "@/components/atoms/bk/BaseTextField"
+import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
+import { BasePullDown, PullDownElement } from "@/components/atoms/bk/BasePullDown"
 import { match } from "ts-pattern"
 
 export default function About() {

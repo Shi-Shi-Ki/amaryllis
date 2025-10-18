@@ -1,5 +1,5 @@
 "use client"
-import { BaseIcon } from "@/components/atoms/BaseIcon"
+import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
 import React, { useState } from "react"
 
 const data = [

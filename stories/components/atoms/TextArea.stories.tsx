@@ -1,17 +1,13 @@
 import * as GlobalType from "@/utils/CommonTypes"
-import { BaseTextArea } from "@/components/atoms/BaseTextArea"
-import { FieldError } from "react-hook-form"
+import TextArea from "@/components/atoms/TextArea"
 import { StoryObj, Meta } from "@storybook/react/*"
 
-type Story = StoryObj<typeof BaseTextArea>
-const meta: Meta<typeof BaseTextArea> = {
-  title: "components/atoms/BaseTextArea",
-  component: BaseTextArea,
+type Story = StoryObj<typeof TextArea>
+const meta: Meta<typeof TextArea> = {
+  title: "components/atoms/TextArea",
+  component: TextArea,
   tags: ["autodocs"],
   argTypes: {
-    htmlForId: {
-      description: "id値",
-    },
     color: {
       control: "radio",
       options: [
@@ -23,7 +19,7 @@ const meta: Meta<typeof BaseTextArea> = {
       ],
       description: "色のタイプ値",
     },
-    widthSize: {
+    widthSizeType: {
       description: "横幅",
       control: "radio",
       options: [
@@ -33,7 +29,7 @@ const meta: Meta<typeof BaseTextArea> = {
         GlobalType.SizeType.LARGE,
       ],
     },
-    componentSize: {
+    componentSizeType: {
       description: "フォームの大きさ",
       control: "radio",
       options: [
@@ -52,9 +48,6 @@ const meta: Meta<typeof BaseTextArea> = {
     hintText: {
       description: "フォーム上部に表示するメッセージ",
     },
-    errorMessage: {
-      description: "エラーメッセージ",
-    },
     rows: {
       control: "text",
       description: "行数",
@@ -65,15 +58,11 @@ const meta: Meta<typeof BaseTextArea> = {
     },
   },
   args: {
-    htmlForId: "dummy_id",
-    widthSize: GlobalType.SizeType.MEDIUM,
-    componentSize: GlobalType.SizeType.MEDIUM,
+    widthSizeType: GlobalType.SizeType.MEDIUM,
+    componentSizeType: GlobalType.SizeType.MEDIUM,
     color: GlobalType.ColorType.PRIMARY,
     placeholder: "入力フォーム",
     hintText: "入力フォームです",
-    errorMessage: {
-      message: "エラーメッセージです",
-    } as FieldError,
     disabled: false,
   },
   parameters: {
@@ -87,36 +76,31 @@ const meta: Meta<typeof BaseTextArea> = {
 
 export const Primary: Story = {
   args: {
-    htmlForId: "primary",
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
   },
 }
 
 export const Secondary: Story = {
   args: {
-    htmlForId: "secondary",
-    color: GlobalType.ColorType.SECONDARY,
+    colorType: GlobalType.ColorType.SECONDARY,
   },
 }
 
 export const Accent: Story = {
   args: {
-    htmlForId: "accent",
-    color: GlobalType.ColorType.ACCENT,
-  },
-}
-
-export const Error: Story = {
-  args: {
-    htmlForId: "error",
-    color: GlobalType.ColorType.ERROR,
+    colorType: GlobalType.ColorType.ACCENT,
   },
 }
 
 export const Ghost: Story = {
   args: {
-    htmlForId: "ghost",
-    color: GlobalType.ColorType.GHOST,
+    colorType: GlobalType.ColorType.GHOST,
+  },
+}
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
   },
 }
 

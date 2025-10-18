@@ -14,6 +14,7 @@ export type themeType = (typeof ThemeType)[keyof typeof ThemeType]
  * 配色タイプ
  */
 export const ColorType = {
+  NONE: "",
   DEFAULT: "default",
   NEUTRAL: "neutral",
   PRIMARY: "primary",
@@ -44,6 +45,17 @@ export const ColorTypeByOutLines = {
 export type colorTypeByOutLines = (typeof ColorTypeByOutLines)[keyof typeof ColorTypeByOutLines]
 
 /**
+ * バリデーション配色
+ */
+export const ValidationColorType = {
+  INFO: "info",
+  SUCCESS: "success",
+  WARNING: "warning",
+  ERROR: "error",
+}
+export type validationColorType = (typeof ValidationColorType)[keyof typeof ValidationColorType]
+
+/**
  * サイズタイプ
  */
 export const SizeType = {
@@ -70,6 +82,7 @@ export type shapeType = (typeof ShapeType)[keyof typeof ShapeType]
 export const ButtonType = {
   BUTTON: "button",
   SUBMIT: "submit",
+  RESET: "reset",
 } as const
 export type buttonType = (typeof ButtonType)[keyof typeof ButtonType]
 

@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const token = request.cookies.get("accessToken")?.value
   const isProtectedPage = config.matcher.some((route) => pathname.startsWith(route))
-
+  console.log("pathname", pathname)
   if (isProtectedPage) {
     if (!token) {
       const signInUrl = new URL("/signin", request.url)

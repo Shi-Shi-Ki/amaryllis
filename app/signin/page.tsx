@@ -1,10 +1,10 @@
 "use client"
 import * as CommonTypes from "@/utils/CommonTypes"
-import { BaseTextField } from "@/components/atoms/BaseTextField"
+import { BaseTextField } from "@/components/atoms/bk/BaseTextField"
 import { useForm } from "react-hook-form"
-import { BaseFrame } from "@/components/atoms/BaseFrame"
+import { BaseFrame } from "@/components/atoms/bk/BaseFrame"
 import Image from "next/image"
-import { BaseButton } from "@/components/atoms/BaseButton"
+import { BaseButton } from "@/components/atoms/bk/BaseButton"
 import { useGoogleLogin } from "@react-oauth/google"
 import { useAuth } from "@/components/AuthProvider"
 import { useEffect } from "react"
@@ -33,6 +33,7 @@ export default function Signin() {
   // useGoogleLogin フックを使って認証フローを開始
   const googleLogin = useGoogleLogin({
     flow: "auth-code", // 認可コードフローを指定
+    redirect_uri: "http://localhost:3000",
     onSuccess: async (codeResponse) => {
       console.log("Auth Code:", codeResponse.code)
       try {
@@ -88,12 +89,13 @@ export default function Signin() {
                 placeholder="パスワード"
                 textType="password"
               />
-              <div className="form-control w-full max-w-xs">
+              <div className="form-control flex flex-col items-center w-full max-w-xs py-8">
                 <BaseButton
                   htmlForId="sign_in_button"
                   size={CommonTypes.SizeType.MEDIUM}
                   color={CommonTypes.ColorType.PRIMARY}
                   onClick={() => {}}
+                  classes={["w-full"]}
                 >
                   sign in
                 </BaseButton>

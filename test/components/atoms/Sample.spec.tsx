@@ -1,4 +1,4 @@
-import { Sample } from "@/components/atoms/Sample"
+import { Sample } from "@/components/atoms/bk/Sample"
 import { render } from "@testing-library/react"
 
 describe("Sampleコンポーネント", () => {

@@ -1,21 +1,17 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import { BasePullDown } from "@/components/atoms/BasePullDown"
-import { FieldError } from "react-hook-form"
+import PullDown from "@/components/atoms/PullDown"
 
-type Story = StoryObj<typeof BasePullDown>
-const meta: Meta<typeof BasePullDown> = {
-  title: "components/atoms/BasePullDown",
-  component: BasePullDown,
+type Story = StoryObj<typeof PullDown>
+const meta: Meta<typeof PullDown> = {
+  title: "components/atoms/PullDown",
+  component: PullDown,
   tags: ["autodocs"],
   argTypes: {
-    htmlForId: {
-      description: "id値",
-    },
     options: {
       description: "プルダウン要素",
     },
-    color: {
+    colorType: {
       control: "radio",
       options: [
         GlobalType.ColorType.DEFAULT,
@@ -53,9 +49,6 @@ const meta: Meta<typeof BasePullDown> = {
     register: {
       description: "バリデーション設定",
     },
-    errorMessage: {
-      description: "バリデーションエラーのメッセージ",
-    },
     onChange: {
       description: "プルダウン選択時のハンドラー",
     },
@@ -65,7 +58,6 @@ const meta: Meta<typeof BasePullDown> = {
     },
   },
   args: {
-    htmlForId: "dummy_id",
     options: [
       {
         element: "以下から選択してください",
@@ -83,17 +75,15 @@ const meta: Meta<typeof BasePullDown> = {
         element: "yellow",
       },
     ],
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
     componentSize: GlobalType.SizeType.MEDIUM,
     widthSize: GlobalType.SizeType.TINY,
     hintText: "項目名など",
-    errorMessage: { message: "エラーメッセージ" } as FieldError,
   },
 }
 
 export const Primary: Story = {
   args: {
-    htmlForId: "primary",
     options: [
       {
         element: "以下から選択してください",
@@ -111,13 +101,12 @@ export const Primary: Story = {
         element: "yellow",
       },
     ],
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
   },
 }
 
 export const Secondary: Story = {
   args: {
-    htmlForId: "secondary",
     options: [
       {
         element: "red",
@@ -129,13 +118,12 @@ export const Secondary: Story = {
         element: "yellow",
       },
     ],
-    color: GlobalType.ColorType.SECONDARY,
+    colorType: GlobalType.ColorType.SECONDARY,
   },
 }
 
 export const Accent: Story = {
   args: {
-    htmlForId: "accent",
     options: [
       {
         element: "red",
@@ -147,13 +135,12 @@ export const Accent: Story = {
         element: "yellow",
       },
     ],
-    color: GlobalType.ColorType.ACCENT,
+    colorType: GlobalType.ColorType.ACCENT,
   },
 }
 
 export const OnChange: Story = {
   args: {
-    htmlForId: "onchange",
     options: [
       {
         element: "red",
@@ -165,7 +152,7 @@ export const OnChange: Story = {
         element: "yellow",
       },
     ],
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
     onChange: (e) => {
       console.log(e.currentTarget.value)
     },

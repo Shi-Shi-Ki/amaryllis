@@ -1,10 +1,10 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import { BaseIcon } from "@/components/atoms/BaseIcon"
-import BaseButton from "@/components/atoms/BaseButton"
+import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
+import BaseButton from "@/components/atoms/bk/BaseButton"
 
 /**
- * https://marella.me/material-icons/demo/
+ * https://marella.github.io/material-icons/demo/
  */
 type Story = StoryObj<typeof BaseIcon>
 const meta: Meta<typeof BaseIcon> = {
@@ -39,7 +39,7 @@ const meta: Meta<typeof BaseIcon> = {
     docs: {
       description: {
         component:
-          "materialアイコンを表示する<br/>一覧はこちら https://marella.me/material-icons/demo/",
+          "materialアイコンを表示する<br/>一覧はこちら https://marella.github.io/material-icons/demo/",
       },
     },
   },

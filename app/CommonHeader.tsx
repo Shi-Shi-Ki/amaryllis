@@ -1,7 +1,7 @@
 "use client"
 import * as CommonTypes from "@/utils/CommonTypes"
-import { BaseIcon } from "@/components/atoms/BaseIcon"
-import { BaseButton } from "@/components/atoms/BaseButton"
+import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
+import { BaseButton } from "@/components/atoms/bk/BaseButton"
 import { useAuth } from "@/components/AuthProvider"
 
 export const CommonHeader = () => {

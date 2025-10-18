@@ -1,17 +1,14 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import { BaseRadioButton } from "@/components/atoms/BaseRadioButton"
+import CheckBox from "@/components/atoms/CheckBox"
 
-type Story = StoryObj<typeof BaseRadioButton>
-const meta: Meta<typeof BaseRadioButton> = {
-  title: "components/atoms/BaseRadioButton",
-  component: BaseRadioButton,
+type Story = StoryObj<typeof CheckBox>
+const meta: Meta<typeof CheckBox> = {
+  title: "components/atoms/CheckBox",
+  component: CheckBox,
   tags: ["autodocs"],
   argTypes: {
-    htmlForId: {
-      description: "id値",
-    },
-    color: {
+    colorType: {
       control: "radio",
       options: [
         GlobalType.ColorType.DEFAULT,
@@ -24,12 +21,12 @@ const meta: Meta<typeof BaseRadioButton> = {
       description: "色のタイプ値",
     },
     isDefaultChecked: {
-      description: "デフォルトのチェックON/OFF制御",
+      description: "チェックON/OFF制御",
     },
     onChange: {
       description: "ボタン押下時のコールバック関数",
     },
-    size: {
+    sizeType: {
       control: "radio",
       options: [
         GlobalType.SizeType.LARGE,
@@ -46,95 +43,69 @@ const meta: Meta<typeof BaseRadioButton> = {
       control: "boolean",
       description: "非活性の設定",
     },
-    classes: {
-      control: "text",
-      description: "任意のclass要素",
-    },
   },
   args: {
-    htmlForId: "top",
     label: "test label",
-    color: GlobalType.ColorType.PRIMARY,
-    size: GlobalType.SizeType.MEDIUM,
+    colorType: GlobalType.ColorType.PRIMARY,
+    sizeType: GlobalType.SizeType.MEDIUM,
   },
 }
+
 export const Primary: Story = {
   args: {
-    htmlForId: "primary",
-    label: "サンプルのラジオボタンです",
-    color: GlobalType.ColorType.PRIMARY,
+    label: "サンプルのチェックボックスです",
+    colorType: GlobalType.ColorType.PRIMARY,
   },
 }
+
 export const Secondary: Story = {
   args: {
-    htmlForId: "secondary",
     label: "サンプルのチェックボックスです",
-    color: GlobalType.ColorType.SECONDARY,
+    colorType: GlobalType.ColorType.SECONDARY,
   },
 }
+
 export const Accent: Story = {
   args: {
-    htmlForId: "accent",
     label: "サンプルのチェックボックスです",
-    color: GlobalType.ColorType.ACCENT,
+    colorType: GlobalType.ColorType.ACCENT,
   },
 }
+
 export const DefaultChecked: Story = {
   args: {
-    htmlForId: "default-checked",
     label: "デフォルトでチェックON",
     isDefaultChecked: true,
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
   },
 }
+
 export const Disabled: Story = {
   args: {
-    htmlForId: "default-checked",
     label: "非活性状態です",
     disabled: true,
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
   },
 }
+
 export const CheckedEvent: Story = {
   args: {
-    htmlForId: "default-checked",
     label: "チェックボックスのイベントハンドリングです",
-    color: GlobalType.ColorType.PRIMARY,
+    colorType: GlobalType.ColorType.PRIMARY,
     onChange: () => {
       alert("on change!")
     },
   },
 }
-export const MultiRadioButtons: Story = {
+
+export const MultiCheckBoxes: Story = {
   render: () => {
-    const color = GlobalType.ColorType.SECONDARY
-    const nameValue = "multi-radio-buttons"
+    const color = GlobalType.ColorType.PRIMARY
     return (
       <div>
-        <BaseRadioButton
-          htmlForId="multi-radio-buttons-1"
-          label="value 1"
-          color={color}
-          onChange={() => {}}
-          value="1"
-          name={nameValue}
-        />
-        <BaseRadioButton
-          htmlForId="multi-radio-buttons-2"
-          label="value 2"
-          color={color}
-          onChange={() => {}}
-          value="2"
-          name={nameValue}
-        />
-        <BaseRadioButton
-          htmlForId="multi-radio-buttons-3"
-          label="value 3"
-          color={color}
-          onChange={() => {}}
-          value="3"
-          name={nameValue}
-        />
+        <CheckBox colorType={color} label="value 1" value="1" />
+        <CheckBox colorType={color} label="value 2" value="2" />
+        <CheckBox colorType={color} label="value 3" value="3" />
       </div>
     )
   },

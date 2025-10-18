@@ -1,15 +1,13 @@
 import * as CommonTypes from "@/utils/CommonTypes"
-import { JSX, MouseEvent } from "react"
-import { BaseButton, ButtonColor } from "@/components/atoms/BaseButton"
+import { JSX } from "react"
+import Button, { IButton } from "@/components/atoms/Button"
 
 interface SubmitFormProps {
   htmlForId: string
   method: CommonTypes.methodType
   uri: string
   submitElements: React.ReactNode
-  buttonColor: ButtonColor
-  disabled?: boolean
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void
+  completeButton: IButton
 }
 
 export const SubmitForm = ({
@@ -17,24 +15,13 @@ export const SubmitForm = ({
   method,
   uri,
   submitElements,
-  buttonColor,
-  disabled = false,
-  onClick,
+  completeButton,
 }: SubmitFormProps): JSX.Element => {
-  const submitButtonId = `submit-${htmlForId}`
   return (
     <>
       <form id={htmlForId} method={method} action={uri}>
         {submitElements}
-        <BaseButton
-          htmlForId={submitButtonId}
-          color={buttonColor}
-          disabled={disabled}
-          buttonType={CommonTypes.ButtonType.SUBMIT}
-          onClick={onClick}
-        >
-          submit
-        </BaseButton>
+        <Button {...completeButton} />
       </form>
     </>
   )

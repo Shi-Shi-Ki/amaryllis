@@ -1,10 +1,10 @@
 "use client"
 import * as CommonTypes from "@/utils/CommonTypes"
-import { BaseTextField } from "@/components/atoms/BaseTextField"
+import { BaseTextField } from "@/components/atoms/bk/BaseTextField"
 import { useForm } from "react-hook-form"
-import { BaseFrame } from "@/components/atoms/BaseFrame"
+import { BaseFrame } from "@/components/atoms/bk/BaseFrame"
 import Image from "next/image"
-import { BaseButton } from "@/components/atoms/BaseButton"
+import { BaseButton } from "@/components/atoms/bk/BaseButton"
 
 export default function Signup() {
   const {
