@@ -53,6 +53,7 @@ const buildDetail = (
       tableBodyList: nestedList,
       handleRowClick: () => {}, // Storybook上で上書きされる
     },
+    isFirstPage: false, //todo
     onDrillDownClick: () => {},
   }
 }
@@ -83,23 +84,26 @@ const drawerContentProps = {
   handleRowClick: () => alert("click zoom!"),
 }
 
-const initialDrawerDetail: IDrawerDetail = {
-  cardContent: {
-    title: "初期選択情報",
-    description: "リストから項目を選択すると、ここに詳細が表示されます。",
-    completeButton: {
-      children: "完了",
-      onClick: () => console.log("Initial complete"),
-      colorType: GlobalType.ColorType.PRIMARY,
-    },
-  },
-  tableContent: {
-    tableHeader: { id: "id", name: "関連名", value: "値" },
-    tableBodyList: [{ id: "d1", name: "住所", value: "東京都" }],
-    handleRowClick: () => {},
-  },
-  onDrillDownClick: () => {},
-}
+// const initialDrawerDetail: IDrawerDetail = {
+//   cardContent: {
+//     title: "初期選択情報",
+//     description: "リストから項目を選択すると、ここに詳細が表示されます。",
+//     completeButton: {
+//       children: "完了",
+//       onClick: () => console.log("Initial complete"),
+//       colorType: GlobalType.ColorType.PRIMARY,
+//     },
+//   },
+//   tableContent: {
+//     // tableHeader: { id: "id", name: "関連名", value: "値" },
+//     // tableBodyList: [{ id: "d1", name: "住所", value: "東京都" }],
+//     tableHeader: {},
+//     tableBodyList: [],
+//     handleRowClick: () => {},
+//   },
+//   onDrillDownClick: () => {},
+//   isFirstPage: false, //todo
+// }
 
 const meta: Meta<typeof DrawerList> = {
   title: "Organisms/DrawerList (Drill Down)",
@@ -107,7 +111,7 @@ const meta: Meta<typeof DrawerList> = {
   tags: ["autodocs"],
   args: {
     drawerContent: drawerContentProps,
-    initialDrawerDetail: initialDrawerDetail,
+    // initialDrawerDetail: initialDrawerDetail,
     fetchDetailData: mockFetchDetail,
   },
   decorators: [

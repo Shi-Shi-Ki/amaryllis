@@ -1,15 +1,16 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
-import BaseButton from "@/components/atoms/bk/BaseButton"
+// import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
+import Icon from "@/components/atoms/Icon"
+import Button from "@/components/atoms/Button"
 
 /**
  * https://marella.github.io/material-icons/demo/
  */
-type Story = StoryObj<typeof BaseIcon>
-const meta: Meta<typeof BaseIcon> = {
-  title: "components/atoms/BaseIcon",
-  component: BaseIcon,
+type Story = StoryObj<typeof Icon>
+const meta: Meta<typeof Icon> = {
+  title: "components/atoms/Icon",
+  component: Icon,
   tags: ["autodocs"],
   argTypes: {
     iconName: {
@@ -27,9 +28,6 @@ const meta: Meta<typeof BaseIcon> = {
       ],
       description: "色のタイプ値",
     },
-    htmlForId: {
-      description: "id値（デフォルトはランダムなuuid）",
-    },
   },
   args: {
     iconName: "home",
@@ -45,63 +43,128 @@ const meta: Meta<typeof BaseIcon> = {
   },
 }
 
-export const Primary: Story = {
-  args: {
-    iconName: "add",
-    iconColor: GlobalType.ColorType.PRIMARY,
-  },
-}
 export const WithPrimaryButton: Story = {
   render: () => (
     <>
-      <BaseButton
-        htmlForId="with-primary-button"
-        color={GlobalType.ColorType.PRIMARY}
+      <Button
+        colorType={GlobalType.ColorType.PRIMARY}
         onClick={() => {}}
-        shape={GlobalType.ShapeType.CIRCLE}
+        shapeType={GlobalType.ShapeType.CIRCLE}
       >
-        <BaseIcon iconName="add" />
-      </BaseButton>
+        <Icon iconName="add" />
+      </Button>
     </>
   ),
 }
-export const Secondary: Story = {
-  args: {
-    iconName: "help",
-    iconColor: GlobalType.ColorType.SECONDARY,
-  },
-}
+
 export const WithSecondaryButton: Story = {
   render: () => (
     <>
-      <BaseButton
-        htmlForId="with-secondary-button"
-        color={GlobalType.ColorType.SECONDARY}
+      <Button
+        colorType={GlobalType.ColorType.SECONDARY}
         onClick={() => {}}
-        shape={GlobalType.ShapeType.CIRCLE}
+        shapeType={GlobalType.ShapeType.CIRCLE}
       >
-        <BaseIcon iconName="help" />
-      </BaseButton>
+        <Icon iconName="help" />
+      </Button>
     </>
   ),
 }
-export const Accent: Story = {
-  args: {
-    iconName: "language",
-    iconColor: GlobalType.ColorType.ACCENT,
-  },
-}
+
 export const WithAccentButton: Story = {
   render: () => (
     <>
-      <BaseButton
-        htmlForId="with-accent-button"
-        color={GlobalType.ColorType.ACCENT}
+      <Button
+        colorType={GlobalType.ColorType.ACCENT}
         onClick={() => {}}
-        shape={GlobalType.ShapeType.SQUARE}
+        shapeType={GlobalType.ShapeType.CIRCLE}
       >
-        <BaseIcon iconName="language" />
-      </BaseButton>
+        <Icon iconName="language" />
+      </Button>
+    </>
+  ),
+}
+
+export const AttachFileButton: Story = {
+  render: () => (
+    <>
+      <Button
+        colorType={GlobalType.ColorType.DEFAULT}
+        onClick={() => {}}
+        shapeType={GlobalType.ShapeType.CIRCLE}
+      >
+        <Icon iconName="attach_file" />
+      </Button>
+    </>
+  ),
+}
+
+export const DoneButton: Story = {
+  render: () => (
+    <>
+      <Button
+        colorType={GlobalType.ColorType.DEFAULT}
+        onClick={() => {}}
+        shapeType={GlobalType.ShapeType.CIRCLE}
+      >
+        <Icon iconName="done" />
+      </Button>
+    </>
+  ),
+}
+
+export const DownloadButton: Story = {
+  render: () => (
+    <>
+      <Button
+        colorType={GlobalType.ColorType.DEFAULT}
+        onClick={() => {}}
+        shapeType={GlobalType.ShapeType.CIRCLE}
+      >
+        <Icon iconName="download" />
+      </Button>
+    </>
+  ),
+}
+
+export const EditButton: Story = {
+  render: () => (
+    <>
+      <Button
+        colorType={GlobalType.ColorType.DEFAULT}
+        onClick={() => {}}
+        shapeType={GlobalType.ShapeType.CIRCLE}
+      >
+        <Icon iconName="edit" />
+      </Button>
+    </>
+  ),
+}
+
+export const DeleteButton: Story = {
+  render: () => (
+    <>
+      <Button
+        colorType={GlobalType.ColorType.DEFAULT}
+        onClick={() => {}}
+        shapeType={GlobalType.ShapeType.CIRCLE}
+      >
+        <Icon iconName="delete" />
+      </Button>
+    </>
+  ),
+}
+
+export const ConfigButton: Story = {
+  render: () => (
+    <>
+      <Button
+        colorType={GlobalType.ColorType.DEFAULT}
+        onClick={() => {}}
+        shapeType={GlobalType.ShapeType.CIRCLE}
+      >
+        <Icon iconName="build" />
+      </Button>
     </>
   ),
 }

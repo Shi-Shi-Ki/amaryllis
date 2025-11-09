@@ -8,9 +8,15 @@ export interface IDrawerDetail {
   cardContent: ICard
   tableContent: ITable<IDrawerDetailTable>
   onDrillDownClick: (item: IDrawerContentDetail) => void
+  isFirstPage?: boolean
 }
 
-const DrawerDetail = ({ cardContent, tableContent, onDrillDownClick }: IDrawerDetail) => {
+const DrawerDetail = ({
+  cardContent,
+  tableContent,
+  onDrillDownClick,
+  isFirstPage = false,
+}: IDrawerDetail) => {
   // 内部Tableのクリックは、親(DrawerList)から渡された onDrillDownClick を実行
   const detailTableProps: ITable<IDrawerContentDetail> = {
     ...tableContent,

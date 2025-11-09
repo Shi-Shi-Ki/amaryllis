@@ -15,8 +15,8 @@ export interface IButton extends React.ComponentPropsWithoutRef<"button"> {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
   sizeType?: CommonTypes.sizeType
   buttonType?: CommonTypes.buttonType
+  shapeType?: CommonTypes.shapeType
   disabled?: boolean
-  // props?: React.ComponentPropsWithoutRef<"button">
 }
 
 const Button = ({
@@ -25,6 +25,7 @@ const Button = ({
   onClick,
   sizeType = CommonTypes.SizeType.SMALL,
   buttonType = CommonTypes.ButtonType.BUTTON,
+  shapeType = CommonTypes.ShapeType.NONE,
   disabled = false,
   ...props
 }: IButton): React.JSX.Element => {
@@ -44,6 +45,11 @@ const Button = ({
         [CommonTypes.SizeType.SMALL]: "btn-sm",
         [CommonTypes.SizeType.TINY]: "btn-xs",
       },
+      shape: {
+        [CommonTypes.ShapeType.NONE]: "",
+        [CommonTypes.ShapeType.CIRCLE]: "btn-circle",
+        [CommonTypes.ShapeType.SQUARE]: "btn-square",
+      },
       disabled: {
         true: "btn-default no-animation",
       },
@@ -58,7 +64,12 @@ const Button = ({
 
   return (
     <button
-      className={baseStyle({ color: colorType, size: sizeType, disabled: disabled })}
+      className={baseStyle({
+        color: colorType,
+        size: sizeType,
+        shape: shapeType,
+        disabled: disabled,
+      })}
       onClick={handleSubmit}
       type={buttonType}
       disabled={disabled}

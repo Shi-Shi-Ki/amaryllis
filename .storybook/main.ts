@@ -1,6 +1,13 @@
 import type { StorybookConfig } from "@storybook/nextjs"
 import path from "path"
 const config: StorybookConfig = {
+  core: {
+    // 永続キャッシュを有効化
+    builder: "@storybook/builder-webpack5",
+    disableTelemetry: true,
+    enableCrashReports: true,
+  },
+
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|ts|tsx)"],
 
   addons: [
@@ -31,6 +38,15 @@ const config: StorybookConfig = {
 
   // https://storybook.js.org/docs/react/builders/webpack#troubleshooting
   webpackFinal: async (config) => {
+    if (config.cache === false) {
+      config.cache = {
+        type: "filesystem",
+        buildDependencies: {
+          config: [__filename],
+        },
+      }
+    }
+
     if (config.resolve) {
       config.resolve.alias = {
         ...config.resolve.alias,
