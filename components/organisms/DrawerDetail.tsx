@@ -8,25 +8,30 @@ export interface IDrawerDetail {
   cardContent: ICard
   tableContent: ITable<IDrawerDetailTable>
   onDrillDownClick: (item: IDrawerContentDetail) => void
-  isFirstPage?: boolean
+  isLoading?: boolean
 }
 
 const DrawerDetail = ({
   cardContent,
   tableContent,
   onDrillDownClick,
-  isFirstPage = false,
+  isLoading = false,
 }: IDrawerDetail) => {
+  const detailCardProps: ICard = {
+    ...cardContent,
+    isLoading,
+  }
   // 内部Tableのクリックは、親(DrawerList)から渡された onDrillDownClick を実行
   const detailTableProps: ITable<IDrawerContentDetail> = {
     ...tableContent,
     handleRowClick: onDrillDownClick,
+    isLoading: isLoading,
   }
 
   return (
     <>
       <div className="w-full">
-        <Card {...cardContent} />
+        <Card {...detailCardProps} />
       </div>
       <div className="w-full mt-8">
         <Table {...detailTableProps} />

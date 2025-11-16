@@ -1,10 +1,11 @@
 import React from "react"
-import { BaseIcon } from "../atoms/bk/BaseIcon"
+import Icon from "@/components/atoms/Icon"
 
 export interface ITable<T extends IDrawerContentDetail> {
   tableHeader: Record<string, string>
   tableBodyList: T[]
   handleRowClick: (event: T) => void
+  isLoading?: boolean
 }
 
 export interface IDrawerContentDetail {
@@ -16,7 +17,20 @@ function Table<T extends IDrawerContentDetail>({
   tableHeader,
   tableBodyList,
   handleRowClick,
+  isLoading = false,
 }: ITable<T>) {
+  if (isLoading) {
+    return (
+      <div className="overflow-x-auto">
+        <div className="skeleton h-8 w-full mb-2"></div>
+        <div className="space-y-2">
+          <div className="skeleton h-12 w-full"></div>
+          <div className="skeleton h-12 w-full"></div>
+          <div className="skeleton h-12 w-full"></div>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="overflow-x-auto">
       <table className="table table-zebra w-full">
@@ -45,7 +59,7 @@ function Table<T extends IDrawerContentDetail>({
                           handleRowClick(item)
                         }}
                       >
-                        <BaseIcon iconName="zoom_in" htmlForId={"zoom_in_" + item.id} />
+                        <Icon iconName="zoom_in" />
                       </label>
                     </th>
                   )

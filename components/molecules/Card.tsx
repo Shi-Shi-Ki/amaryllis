@@ -5,9 +5,18 @@ export interface ICard {
   title: string
   description: string
   completeButton: IButton
+  isLoading?: boolean
 }
 
-const Card = ({ title, description, completeButton }: ICard): React.JSX.Element => {
+const Card = ({
+  title,
+  description,
+  completeButton,
+  isLoading = false,
+}: ICard): React.JSX.Element => {
+  if (isLoading) {
+    return <div className="skeleton h-32 shadow-sm w-full"></div>
+  }
   return (
     <div className="card bg-base-100 card-xs shadow-sm w-full">
       <div className="card-body">

@@ -18,10 +18,12 @@ function DrawerList<T extends IDrawerContentDetail>({
   const [currentDetail, setCurrentDetail] = useState<IDrawerDetail>()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [historyStack, setHistoryStack] = useState<IDrawerDetail[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
+  // drawerを閉じた時に実行される
   useEffect(() => {
     if (!isDrawerOpen) {
-      console.log("isDrawerOpen!")
+      // パンくずリストの内容をクリアする
       setHistoryStack([])
       setCurrentDetail(undefined)
     }
@@ -30,20 +32,14 @@ function DrawerList<T extends IDrawerContentDetail>({
   const handleDrillDown = useCallback(
     async (itemData: IDrawerContentDetail) => {
       console.log("* call handleDrillDown")
-      // ドロワーを開く（既に開いていればそのまま）
-      // if (!isDrawerOpen) {
-      //   console.log("isDrawerOpen!")
-      //   setIsDrawerOpen(true)
-      //   setHistoryStack([])
-      //   setCurrentDetail(undefined)
-      // }
       if (!isDrawerOpen) {
         setIsDrawerOpen(true)
       }
       console.log("1 - currentDetail: ", currentDetail)
-      // データをフェッチ
       try {
-        // fetchDetail を使用して、クリックされたアイテムの詳細を取得
+        // ローディング中フラグを立てる
+        setIsLoading(true)
+        // fetchDetailDataを使用してクリックされたアイテムの詳細を取得
         const newDetail = await fetchDetailData(itemData)
         console.log("itemData: ", itemData)
         // 現在のデータを履歴にプッシュ
@@ -59,6 +55,10 @@ function DrawerList<T extends IDrawerContentDetail>({
         setCurrentDetail(newDetail)
       } catch (error) {
         console.error("詳細データの取得に失敗しました:", error)
+      } finally {
+        // ローディング中フラグを下す
+        setIsLoading(false)
+        console.log("end loading.")
       }
     },
     [isDrawerOpen, fetchDetailData, currentDetail]
@@ -102,7 +102,13 @@ function DrawerList<T extends IDrawerContentDetail>({
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
         <div className="bg-base-200 text-base-content min-h-full p-4 w-full md:w-2/3 flex flex-col items-center">
           <Breadcrumbs history={historyStack} onNavigate={handleNavigate} />
-          {currentDetail && <DrawerDetail {...currentDetail} onDrillDownClick={handleDrillDown} />}
+          {currentDetail && (
+            <DrawerDetail
+              {...currentDetail}
+              onDrillDownClick={handleDrillDown}
+              isLoading={isLoading}
+            />
+          )}
         </div>
       </div>
     </div>

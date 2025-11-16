@@ -1,6 +1,5 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-// import { BaseIcon } from "@/components/atoms/bk/BaseIcon"
 import Icon from "@/components/atoms/Icon"
 import Button from "@/components/atoms/Button"
 
