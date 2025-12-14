@@ -1,6 +1,8 @@
 import React from "react"
-import Card, { ICard } from "../molecules/Card"
-import Table, { ITable, IDrawerContentDetail } from "../molecules/Table"
+import Card, { ICard } from "@/components/molecules/Card"
+import Table, { ITable, IDrawerContentDetail } from "@/components/molecules/Table"
+import { EditableFieldDefinition } from "@/components/molecules/TableRowEdit"
+import { IOnAddRow } from "@/stories/components/organisms/DrawerList.stories"
 
 export interface IDrawerDetailTable extends IDrawerContentDetail {}
 
@@ -9,6 +11,9 @@ export interface IDrawerDetail {
   tableContent: ITable<IDrawerDetailTable>
   onDrillDownClick: (item: IDrawerContentDetail) => void
   isLoading?: boolean
+  onAddRow?: IOnAddRow
+  editableFields?: EditableFieldDefinition<IDrawerDetailTable>[]
+  canAddRow?: boolean
 }
 
 const DrawerDetail = ({
@@ -16,6 +21,9 @@ const DrawerDetail = ({
   tableContent,
   onDrillDownClick,
   isLoading = false,
+  onAddRow,
+  editableFields,
+  canAddRow = false,
 }: IDrawerDetail) => {
   const detailCardProps: ICard = {
     ...cardContent,
@@ -26,7 +34,11 @@ const DrawerDetail = ({
     ...tableContent,
     handleRowClick: onDrillDownClick,
     isLoading: isLoading,
+    onAddRow: onAddRow,
+    editableFields: editableFields,
+    canAddRow: canAddRow,
   }
+  console.log("DrawerDetail) detailTableProps: ", detailTableProps)
 
   return (
     <>

@@ -5,16 +5,13 @@ import Breadcrumbs from "../atoms/Breadcrumbs"
 
 export interface IDrawerList<T extends IDrawerContentDetail> {
   drawerContent: ITable<T>
-  // initialDrawerDetail: IDrawerDetail
   fetchDetailData: (data: IDrawerContentDetail) => Promise<IDrawerDetail>
 }
 
 function DrawerList<T extends IDrawerContentDetail>({
   drawerContent,
-  // initialDrawerDetail,
   fetchDetailData,
 }: IDrawerList<T>) {
-  // const [currentDetail, setCurrentDetail] = useState<IDrawerDetail>(initialDrawerDetail)
   const [currentDetail, setCurrentDetail] = useState<IDrawerDetail>()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [historyStack, setHistoryStack] = useState<IDrawerDetail[]>([])
@@ -85,6 +82,7 @@ function DrawerList<T extends IDrawerContentDetail>({
     // 外部リストのクリックも handleDrillDown で処理
     handleRowClick: handleDrillDown as (event: T) => void, // TはIDrawerContentDetailの派生なので型キャスト可能
   }
+  console.log("DrawerList) currentDetail:", currentDetail)
 
   return (
     <div className="drawer drawer-end">
@@ -107,6 +105,9 @@ function DrawerList<T extends IDrawerContentDetail>({
               {...currentDetail}
               onDrillDownClick={handleDrillDown}
               isLoading={isLoading}
+              onAddRow={currentDetail.tableContent.onAddRow}
+              editableFields={currentDetail.tableContent.editableFields}
+              canAddRow={currentDetail.tableContent.canAddRow}
             />
           )}
         </div>

@@ -1,14 +1,20 @@
 import * as GlobalType from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
-import DrawerList from "@/components/organisms/DrawerList"
-import { IDrawerContentDetail } from "@/components/molecules/Table"
+import DrawerList, { IDrawerList } from "@/components/organisms/DrawerList"
+import { IDrawerContentDetail, INewRecodes, ITable } from "@/components/molecules/Table"
 import { IDrawerDetail } from "@/components/organisms/DrawerDetail"
+import { JSX, useCallback, useState } from "react"
+import { EditableFieldDefinition } from "@/components/molecules/TableRowEdit"
 
-type Story = StoryObj<typeof DrawerList>
+export type IOnAddRow = (newRecord: INewRecodes) => Promise<void>
 
-interface IUser extends IDrawerContentDetail {
-  name: string
-  age: number
+interface TableEditorProps<T extends IDrawerContentDetail> {
+  // 編集対象のフィールド定義の配列 (例: taskName, status)
+  editableFields: EditableFieldDefinition<T>[]
+  // 新規レコードの保存ハンドラ
+  onAddRow: IOnAddRow
+  // (オプション) 追加機能の有効/無効
+  canAddRow?: boolean
 }
 
 interface ITask extends IDrawerContentDetail {
@@ -16,32 +22,88 @@ interface ITask extends IDrawerContentDetail {
   status: "Todo" | "Done"
 }
 
-const userData: IUser[] = [
-  { id: "u1", name: "田中 太郎", age: 25 },
-  { id: "u2", name: "山田 花子", age: 30 },
-  { id: "u3", name: "佐藤 次郎", age: 22 },
-]
-
-const tasks: ITask[] = [
-  { id: "task-t1", taskName: "初期設定", status: "Done" },
-  { id: "task-t2", taskName: "コンポーネント作成", status: "Todo" },
-]
-
-const subtasks: ITask[] = [
-  { id: "sub-s1", taskName: "Card実装", status: "Done" },
-  { id: "sub-s2", taskName: "Table実装", status: "Todo" },
-]
-
 const endTasks: ITask[] = [{ id: "end-1", taskName: "これ以上詳細はありません", status: "Done" }]
 
+// ダミーデータ
+const createInitialMap = (): Map<string, ITask[]> => {
+  const map = new Map<string, ITask[]>()
+  map.set("1", [
+    { id: "11", taskName: "タスク 1", status: "Todo" },
+    { id: "12", taskName: "タスク 2", status: "Done" },
+    { id: "13", taskName: "タスク 3", status: "Done" },
+  ])
+  map.set("11", [
+    { id: "101", taskName: "環境構築", status: "Done" },
+    { id: "102", taskName: "コンポーネント作成", status: "Todo" },
+  ])
+  map.set("12", [
+    { id: "201", taskName: "テーブル設計", status: "Done" },
+    { id: "202", taskName: "RDSの準備", status: "Todo" },
+  ])
+  map.set("13", [{ id: "0", taskName: "テストケース作成", status: "Todo" }])
+  map.set("101", [
+    { id: "1001", taskName: "nginxのインストール", status: "Todo" },
+    { id: "1002", taskName: "nextjsのインストール", status: "Todo" },
+    { id: "1003", taskName: "動作確認", status: "Todo" },
+  ])
+  map.set("102", [
+    { id: "1011", taskName: "buttonコンポーネント", status: "Done" },
+    { id: "1012", taskName: "checkboxコンポーネント", status: "Done" },
+  ])
+  map.set("201", [
+    { id: "2001", taskName: "ユーザー情報", status: "Done" },
+    { id: "2001", taskName: "購入履歴情報", status: "Done" },
+    { id: "2001", taskName: "商品マスター", status: "Todo" },
+  ])
+  map.set("202", [
+    { id: "2011", taskName: "見積もり", status: "Done" },
+    { id: "2012", taskName: "インスタンス作成", status: "Todo" },
+  ])
+  return map
+}
+
+// タスク/サブタスク用の編集フィールド定義
+const taskEditableFields: EditableFieldDefinition<ITask>[] = [
+  {
+    key: "taskName",
+    isEditable: true,
+    validationRules: {
+      required: "サブタスク名は必須です",
+      maxLength: {
+        value: 50,
+        message: "50文字以内で入力してください",
+      },
+    },
+    defaultValue: "",
+  },
+  {
+    key: "status",
+    isEditable: false,
+    validationRules: {},
+    defaultValue: "Todo", // 編集不可の初期値
+  },
+]
+
 const buildDetail = (
+  parentId: string,
   item: IDrawerContentDetail,
-  nestedList: IDrawerContentDetail[]
+  nestedList: ITask[],
+  editableFields: EditableFieldDefinition<ITask>[],
+  onAddRowCallback: (newRecord: INewRecodes, parentId: string) => Promise<void>,
+  canAddRow: boolean = true
 ): IDrawerDetail => {
+  const itemAsTask = item as Partial<ITask>
+
+  const tableEditorPropsForITable = {
+    onAddRow: (newRecord: INewRecodes) => onAddRowCallback(newRecord, parentId),
+    editableFields: editableFields as EditableFieldDefinition<IDrawerContentDetail>[],
+    canAddRow: canAddRow,
+  }
+
   return {
     cardContent: {
-      title: `詳細データ: ${item.name || item.taskName || item.id}`,
-      description: `ID: ${item.id}\nステータス: ${item.status || "N/A"}`,
+      title: `詳細データ: ${item.name || itemAsTask.taskName || item.id}`,
+      description: `ID: ${item.id}\nステータス: ${itemAsTask.status || "N/A"}`,
       completeButton: {
         children: "ボタン",
         onClick: () => console.log("Close"),
@@ -49,47 +111,94 @@ const buildDetail = (
       },
     },
     tableContent: {
-      tableHeader: { id: "id", taskName: "サブタスク名", status: "状態" },
+      tableHeader: { id: "", taskName: "サブタスク名", status: "状態" },
       tableBodyList: nestedList,
-      handleRowClick: () => {}, // Storybook上で上書きされる
+      handleRowClick: () => {},
     },
     onDrillDownClick: () => {},
+    ...tableEditorPropsForITable,
   }
 }
 
-const mockFetchDetail = async (item: IDrawerContentDetail): Promise<IDrawerDetail> => {
-  await new Promise((resolve) => setTimeout(resolve, Math.random() * (300 - 1000) + 1000)) // API遅延をシミュレート
+const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawerContentDetail>) => {
+  const [listDataMap, setListDataMap] = useState<Map<string, ITask[]>>(createInitialMap())
+  const [nextIdCounter, setNextIdCounter] = useState(1)
 
-  // IDによって返すデータを切り替える
-  if (item.id === "u1") {
-    // ユーザーu1 -> タスクリスト
-    return buildDetail(item, tasks)
-  }
-  if (item.id === "task-t2") {
-    // タスクt2 -> サブタスクリスト
-    return buildDetail(item, subtasks)
-  }
-  if (item.id === "sub-s1" || item.id === "sub-s2") {
-    // sub-s1 or sub-s2タスク -> endタスク
-    return buildDetail(item, endTasks)
-  }
-  // 終端データ
-  return buildDetail(item, [])
-}
+  // 編集レコードで確定ボタンを押下した時のアクション
+  const mockOnAddRow = useCallback(
+    async (newRecord: INewRecodes, parentId: string) => {
+      console.log("Storybook: 新規レコードを保存モック:", newRecord)
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-const drawerContentProps = {
-  tableHeader: { id: "", name: "名前", age: "年齢" },
-  tableBodyList: userData,
-  handleRowClick: () => alert("click zoom!"),
+      const newId = `task-new-${nextIdCounter}`
+      setNextIdCounter((prev) => prev + 1)
+
+      const newFullTask: ITask = {
+        id: newId,
+        ...newRecord,
+      } as ITask
+
+      setListDataMap((prevMap) => {
+        const targetList = prevMap.get(parentId)
+        if (!targetList) {
+          return prevMap
+        }
+        const updatedList = [...targetList, newFullTask]
+        const newMapData = new Map(prevMap)
+        newMapData.set(parentId, updatedList)
+        return newMapData
+      })
+      console.log(`新しいタスク: ${newRecord.taskName} (${newId}) をリストに追加しました`)
+    },
+    [nextIdCounter]
+  )
+
+  // レコード追加に必要なオブジェクト
+  const editingProps = {
+    editableFields: taskEditableFields,
+    canAddRow: true,
+  }
+
+  // 各レコードの詳細ボタンから次に表示するリストを表示する
+  const mockFetchDetail = useCallback(
+    async (item: IDrawerContentDetail): Promise<IDrawerDetail> => {
+      // APIの待ち時間を模倣
+      await new Promise((resolve) => setTimeout(resolve, Math.random() * 500 + 300))
+      console.log(`* get record data. (id: ${item.id})`)
+      const parentId = item.id
+      const taskData = listDataMap.get(parentId)
+      if (taskData) {
+        return buildDetail(parentId, item, taskData, taskEditableFields, mockOnAddRow)
+      }
+      return buildDetail(parentId, item, endTasks, taskEditableFields, mockOnAddRow, false)
+    },
+    [listDataMap, editingProps]
+  )
+
+  // ファーストビューに表示するタスクリストのオブジェクト
+  const firstDataId = "1"
+  const masterTableProps: ITable<ITask> = {
+    ...args.drawerContent,
+    tableBodyList: listDataMap.get(firstDataId) || [],
+    editableFields: editingProps.editableFields,
+    onAddRow: (newRecord) => mockOnAddRow(newRecord, firstDataId),
+    canAddRow: true,
+  }
+
+  return <DrawerList {...args} drawerContent={masterTableProps} fetchDetailData={mockFetchDetail} />
 }
 
 const meta: Meta<typeof DrawerList> = {
   title: "Organisms/DrawerList (Drill Down)",
-  component: DrawerList,
+  component: DrawerListContainer as any,
   tags: ["autodocs"],
   args: {
-    drawerContent: drawerContentProps,
-    fetchDetailData: mockFetchDetail,
+    drawerContent: {
+      tableHeader: { id: "", taskName: "サブタスク名", status: "状態" },
+      tableBodyList: createInitialMap().get("1") || [],
+      handleRowClick: () => alert("click zoom!"),
+    },
+    fetchDetailData: () => Promise.resolve({} as IDrawerDetail),
   },
   decorators: [
     (Story) => (
@@ -100,18 +209,13 @@ const meta: Meta<typeof DrawerList> = {
   ],
 }
 
+export default meta
+
+type Story = StoryObj<typeof DrawerList>
+
+export const Default: Story = {}
+
 export const OpenWithInitialData: Story = {
   name: "開いた状態で表示",
-  args: {
-    drawerContent: drawerContentProps,
-  },
-  // play関数でドロワーを自動的に開く
-  play: async ({ canvasElement, step }) => {
-    const drawerToggle = canvasElement.querySelector("#my-drawer") as HTMLInputElement
-    if (drawerToggle) {
-      drawerToggle.checked = true
-    }
-  },
+  // todo
 }
-
-export default meta
