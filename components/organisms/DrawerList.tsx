@@ -1,18 +1,23 @@
-import React, { useState, useCallback, useEffect } from "react"
+import React, { useState, useCallback, useEffect, SetStateAction, Dispatch } from "react"
 import Table, { ITable, IDrawerContentDetail } from "../molecules/Table"
 import DrawerDetail, { IDrawerDetail } from "./DrawerDetail"
 import Breadcrumbs from "../atoms/Breadcrumbs"
+import { EditableFieldDefinition } from "../molecules/TableRowEdit"
 
 export interface IDrawerList<T extends IDrawerContentDetail> {
   drawerContent: ITable<T>
+  setCurrentDetail: Dispatch<SetStateAction<IDrawerDetail | null>>
+  currentDetail: IDrawerDetail | null
   fetchDetailData: (data: IDrawerContentDetail) => Promise<IDrawerDetail>
 }
 
 function DrawerList<T extends IDrawerContentDetail>({
   drawerContent,
+  setCurrentDetail,
+  currentDetail,
   fetchDetailData,
 }: IDrawerList<T>) {
-  const [currentDetail, setCurrentDetail] = useState<IDrawerDetail>()
+  // const [currentDetail, setCurrentDetail] = useState<IDrawerDetail | null>()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [historyStack, setHistoryStack] = useState<IDrawerDetail[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -22,7 +27,7 @@ function DrawerList<T extends IDrawerContentDetail>({
     if (!isDrawerOpen) {
       // パンくずリストの内容をクリアする
       setHistoryStack([])
-      setCurrentDetail(undefined)
+      setCurrentDetail(null)
     }
   }, [isDrawerOpen])
 
@@ -58,7 +63,8 @@ function DrawerList<T extends IDrawerContentDetail>({
         console.log("end loading.")
       }
     },
-    [isDrawerOpen, fetchDetailData, currentDetail]
+    // [isDrawerOpen, fetchDetailData, currentDetail]
+    [isDrawerOpen, fetchDetailData, currentDetail, setCurrentDetail]
   )
 
   const handleNavigate = useCallback(
@@ -69,8 +75,10 @@ function DrawerList<T extends IDrawerContentDetail>({
       // (クリックされたインデックスの要素 + その前の要素)まで残し、それ以降を削除
       const newHistory = historyStack.slice(0, index)
       // 3. currentDetail を対象のデータに戻す
+      console.log("handleNavigate - targetDetail: ", targetDetail)
       setCurrentDetail(targetDetail)
       // 4. 履歴を更新
+      console.log("handleNavigate - newHistory: ", newHistory)
       setHistoryStack(newHistory)
       // 5. ⚠️ index = -1 (リストのルート)に戻る特別な処理が必要な場合も、このロジックで制御
     },
@@ -105,9 +113,11 @@ function DrawerList<T extends IDrawerContentDetail>({
               {...currentDetail}
               onDrillDownClick={handleDrillDown}
               isLoading={isLoading}
-              onAddRow={currentDetail.tableContent.onAddRow}
-              editableFields={currentDetail.tableContent.editableFields}
-              canAddRow={currentDetail.tableContent.canAddRow}
+              onAddRow={currentDetail.onAddRow ?? drawerContent.onAddRow}
+              editableFields={
+                drawerContent.editableFields as EditableFieldDefinition<IDrawerContentDetail>[]
+              }
+              canAddRow={currentDetail.tableContent.canAddRow || drawerContent.canAddRow}
             />
           )}
         </div>

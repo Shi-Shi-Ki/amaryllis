@@ -8,15 +8,6 @@ import { EditableFieldDefinition } from "@/components/molecules/TableRowEdit"
 
 export type IOnAddRow = (newRecord: INewRecodes) => Promise<void>
 
-interface TableEditorProps<T extends IDrawerContentDetail> {
-  // 編集対象のフィールド定義の配列 (例: taskName, status)
-  editableFields: EditableFieldDefinition<T>[]
-  // 新規レコードの保存ハンドラ
-  onAddRow: IOnAddRow
-  // (オプション) 追加機能の有効/無効
-  canAddRow?: boolean
-}
-
 interface ITask extends IDrawerContentDetail {
   taskName: string
   status: "Todo" | "Done"
@@ -114,6 +105,7 @@ const buildDetail = (
       tableHeader: { id: "", taskName: "サブタスク名", status: "状態" },
       tableBodyList: nestedList,
       handleRowClick: () => {},
+      editableFields: editableFields as EditableFieldDefinition<IDrawerContentDetail>[],
     },
     onDrillDownClick: () => {},
     ...tableEditorPropsForITable,
@@ -123,11 +115,12 @@ const buildDetail = (
 const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawerContentDetail>) => {
   const [listDataMap, setListDataMap] = useState<Map<string, ITask[]>>(createInitialMap())
   const [nextIdCounter, setNextIdCounter] = useState(1)
+  const [currentDetail, setCurrentDetail] = useState<IDrawerDetail | null>(null)
 
   // 編集レコードで確定ボタンを押下した時のアクション
   const mockOnAddRow = useCallback(
     async (newRecord: INewRecodes, parentId: string) => {
-      console.log("Storybook: 新規レコードを保存モック:", newRecord)
+      console.log(`Storybook: 新規レコードを保存モック (parentId: ${parentId}):`, newRecord)
       await new Promise((resolve) => setTimeout(resolve, 500))
 
       const newId = `task-new-${nextIdCounter}`
@@ -139,6 +132,7 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
       } as ITask
 
       setListDataMap((prevMap) => {
+        console.log("prevMap: ", prevMap)
         const targetList = prevMap.get(parentId)
         if (!targetList) {
           return prevMap
@@ -146,11 +140,26 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
         const updatedList = [...targetList, newFullTask]
         const newMapData = new Map(prevMap)
         newMapData.set(parentId, updatedList)
+
+        // 表示中のリストを更新する
+        console.log("currentDetail: ", currentDetail)
+        setCurrentDetail((prevDetail) => {
+          if (!prevDetail) return null
+          console.log("prevDetail: ", prevDetail)
+          return {
+            ...prevDetail,
+            tableContent: {
+              ...prevDetail.tableContent,
+              tableBodyList: newMapData.get(parentId) || prevDetail.tableContent.tableBodyList,
+            },
+          }
+        })
+
         return newMapData
       })
       console.log(`新しいタスク: ${newRecord.taskName} (${newId}) をリストに追加しました`)
     },
-    [nextIdCounter]
+    [nextIdCounter, currentDetail, setCurrentDetail]
   )
 
   // レコード追加に必要なオブジェクト
@@ -167,12 +176,13 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
       console.log(`* get record data. (id: ${item.id})`)
       const parentId = item.id
       const taskData = listDataMap.get(parentId)
+      const onAddRowForThisLevel = (newRecord: INewRecodes) => mockOnAddRow(newRecord, parentId)
       if (taskData) {
-        return buildDetail(parentId, item, taskData, taskEditableFields, mockOnAddRow)
+        return buildDetail(parentId, item, taskData, taskEditableFields, onAddRowForThisLevel)
       }
-      return buildDetail(parentId, item, endTasks, taskEditableFields, mockOnAddRow, false)
+      return buildDetail(parentId, item, endTasks, taskEditableFields, onAddRowForThisLevel, false)
     },
-    [listDataMap, editingProps]
+    [listDataMap, mockOnAddRow]
   )
 
   // ファーストビューに表示するタスクリストのオブジェクト
@@ -185,7 +195,15 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
     canAddRow: true,
   }
 
-  return <DrawerList {...args} drawerContent={masterTableProps} fetchDetailData={mockFetchDetail} />
+  return (
+    <DrawerList
+      {...args}
+      drawerContent={masterTableProps}
+      currentDetail={currentDetail}
+      setCurrentDetail={setCurrentDetail}
+      fetchDetailData={mockFetchDetail}
+    />
+  )
 }
 
 const meta: Meta<typeof DrawerList> = {
@@ -197,6 +215,7 @@ const meta: Meta<typeof DrawerList> = {
       tableHeader: { id: "", taskName: "サブタスク名", status: "状態" },
       tableBodyList: createInitialMap().get("1") || [],
       handleRowClick: () => alert("click zoom!"),
+      editableFields: taskEditableFields as EditableFieldDefinition<IDrawerContentDetail>[],
     },
     fetchDetailData: () => Promise.resolve({} as IDrawerDetail),
   },

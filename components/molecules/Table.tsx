@@ -9,7 +9,7 @@ export interface ITable<T extends IDrawerContentDetail> {
   handleRowClick: (event: T) => void
   isLoading?: boolean
   onAddRow?: IOnAddRow
-  editableFields?: EditableFieldDefinition<T>[]
+  editableFields: EditableFieldDefinition<T>[]
   canAddRow?: boolean
 }
 
@@ -42,7 +42,6 @@ function Table<T extends IDrawerContentDetail>({
   }, [canAddRow])
 
   const handleConfirmAdd = useCallback(
-    // async (newRecordData: NewRecord<T>) => {
     async (newRecordData: INewRecodes) => {
       if (!onAddRow) return
 

@@ -10,9 +10,9 @@ export interface IDrawerDetail {
   cardContent: ICard
   tableContent: ITable<IDrawerDetailTable>
   onDrillDownClick: (item: IDrawerContentDetail) => void
+  editableFields: EditableFieldDefinition<IDrawerDetailTable>[]
   isLoading?: boolean
   onAddRow?: IOnAddRow
-  editableFields?: EditableFieldDefinition<IDrawerDetailTable>[]
   canAddRow?: boolean
 }
 
@@ -20,10 +20,10 @@ const DrawerDetail = ({
   cardContent,
   tableContent,
   onDrillDownClick,
+  editableFields,
   isLoading = false,
   onAddRow,
-  editableFields,
-  canAddRow = false,
+  canAddRow = true,
 }: IDrawerDetail) => {
   const detailCardProps: ICard = {
     ...cardContent,
