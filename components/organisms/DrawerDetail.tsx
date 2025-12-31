@@ -1,22 +1,21 @@
 import React from "react"
 import Card, { ICard } from "@/components/molecules/Card"
-import Table, { ITable, IDrawerContentDetail } from "@/components/molecules/Table"
-import { EditableFieldDefinition } from "@/components/molecules/TableRowEdit"
+import Table, { ITable } from "@/components/molecules/Table"
+import { IEditableField } from "@/components/molecules/TableRowEdit"
 import { IOnAddRow } from "@/stories/components/organisms/DrawerList.stories"
+import { IBaseRowData } from "@/utils/CommonTypes"
 
-export interface IDrawerDetailTable extends IDrawerContentDetail {}
-
-export interface IDrawerDetail {
+export interface IDrawerDetail<T extends IBaseRowData = IBaseRowData> {
   cardContent: ICard
-  tableContent: ITable<IDrawerDetailTable>
-  onDrillDownClick: (item: IDrawerContentDetail) => void
-  editableFields: EditableFieldDefinition<IDrawerDetailTable>[]
+  tableContent: ITable<T>
+  onDrillDownClick: (item: T) => void
+  editableFields: IEditableField<T>[]
   isLoading?: boolean
   onAddRow?: IOnAddRow
   canAddRow?: boolean
 }
 
-const DrawerDetail = ({
+const DrawerDetail = <T extends IBaseRowData>({
   cardContent,
   tableContent,
   onDrillDownClick,
@@ -24,13 +23,13 @@ const DrawerDetail = ({
   isLoading = false,
   onAddRow,
   canAddRow = true,
-}: IDrawerDetail) => {
+}: IDrawerDetail<T>) => {
   const detailCardProps: ICard = {
     ...cardContent,
     isLoading,
   }
   // 内部Tableのクリックは、親(DrawerList)から渡された onDrillDownClick を実行
-  const detailTableProps: ITable<IDrawerContentDetail> = {
+  const detailTableProps: ITable<T> = {
     ...tableContent,
     handleRowClick: onDrillDownClick,
     isLoading: isLoading,

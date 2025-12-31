@@ -1,27 +1,20 @@
 import { useState, useCallback } from "react"
 import Icon from "@/components/atoms/Icon"
-import TableRowEdit, { EditableFieldDefinition } from "@/components/molecules/TableRowEdit"
+import TableRowEdit, { IEditableField } from "@/components/molecules/TableRowEdit"
 import { IOnAddRow } from "@/stories/components/organisms/DrawerList.stories"
+import { IBaseRowData, INewRecord } from "@/utils/CommonTypes"
 
-export interface ITable<T extends IDrawerContentDetail> {
-  tableHeader: Record<string, string>
+export interface ITable<T extends IBaseRowData> {
+  tableHeader: Record<keyof T, string>
   tableBodyList: T[]
   handleRowClick: (event: T) => void
   isLoading?: boolean
   onAddRow?: IOnAddRow
-  editableFields: EditableFieldDefinition<T>[]
+  editableFields: IEditableField<T>[]
   canAddRow?: boolean
 }
 
-export interface IDrawerContentDetail extends INewRecodes {
-  id: string
-}
-
-export interface INewRecodes {
-  [key: string]: any
-}
-
-function Table<T extends IDrawerContentDetail>({
+function Table<T extends IBaseRowData>({
   tableHeader,
   tableBodyList,
   handleRowClick,
@@ -42,7 +35,7 @@ function Table<T extends IDrawerContentDetail>({
   }, [canAddRow])
 
   const handleConfirmAdd = useCallback(
-    async (newRecordData: INewRecodes) => {
+    async (newRecordData: INewRecord) => {
       if (!onAddRow) return
 
       setIsSaving(true)

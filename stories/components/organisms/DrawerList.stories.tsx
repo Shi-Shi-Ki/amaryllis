@@ -1,17 +1,20 @@
-import * as GlobalType from "@/utils/CommonTypes"
+import { ColorType, IBaseRowData, INewRecord } from "@/utils/CommonTypes"
 import type { Meta, StoryObj } from "@storybook/react"
 import DrawerList, { IDrawerList } from "@/components/organisms/DrawerList"
-import { IDrawerContentDetail, INewRecodes, ITable } from "@/components/molecules/Table"
+import { ITable } from "@/components/molecules/Table"
 import { IDrawerDetail } from "@/components/organisms/DrawerDetail"
-import { JSX, useCallback, useState } from "react"
-import { EditableFieldDefinition } from "@/components/molecules/TableRowEdit"
+import { useCallback, useState } from "react"
+import { IEditableField } from "@/components/molecules/TableRowEdit"
+import crypto from "crypto"
 
-export type IOnAddRow = (newRecord: INewRecodes) => Promise<void>
+export type IOnAddRow = (newRecord: INewRecord) => Promise<void>
 
-interface ITask extends IDrawerContentDetail {
+interface ITask extends IBaseRowData {
   taskName: string
   status: "Todo" | "Done"
 }
+
+const tableHeader = { id: "", taskName: "サブタスク名", status: "状態" }
 
 const endTasks: ITask[] = [{ id: "end-1", taskName: "これ以上詳細はありません", status: "Done" }]
 
@@ -54,7 +57,7 @@ const createInitialMap = (): Map<string, ITask[]> => {
 }
 
 // タスク/サブタスク用の編集フィールド定義
-const taskEditableFields: EditableFieldDefinition<ITask>[] = [
+const taskEditableFields: IEditableField<ITask>[] = [
   {
     key: "taskName",
     isEditable: true,
@@ -75,19 +78,29 @@ const taskEditableFields: EditableFieldDefinition<ITask>[] = [
   },
 ]
 
+/**
+ * 詳細ページを開いた（ドリルダウンした）先の要素定義
+ * @param parentId
+ * @param item
+ * @param nestedList
+ * @param editableFields
+ * @param onAddRowCallback
+ * @param canAddRow
+ * @returns
+ */
 const buildDetail = (
   parentId: string,
-  item: IDrawerContentDetail,
+  item: IBaseRowData,
   nestedList: ITask[],
-  editableFields: EditableFieldDefinition<ITask>[],
-  onAddRowCallback: (newRecord: INewRecodes, parentId: string) => Promise<void>,
+  editableFields: IEditableField<ITask>[],
+  onAddRowCallback: (newRecord: INewRecord, parentId: string) => Promise<void>,
   canAddRow: boolean = true
-): IDrawerDetail => {
+): IDrawerDetail<ITask> => {
   const itemAsTask = item as Partial<ITask>
 
   const tableEditorPropsForITable = {
-    onAddRow: (newRecord: INewRecodes) => onAddRowCallback(newRecord, parentId),
-    editableFields: editableFields as EditableFieldDefinition<IDrawerContentDetail>[],
+    onAddRow: (newRecord: INewRecord) => onAddRowCallback(newRecord, parentId),
+    editableFields: editableFields as IEditableField<IBaseRowData>[],
     canAddRow: canAddRow,
   }
 
@@ -98,34 +111,33 @@ const buildDetail = (
       completeButton: {
         children: "ボタン",
         onClick: () => console.log("Close"),
-        colorType: GlobalType.ColorType.PRIMARY,
+        colorType: ColorType.PRIMARY,
       },
     },
     tableContent: {
       tableHeader: { id: "", taskName: "サブタスク名", status: "状態" },
       tableBodyList: nestedList,
       handleRowClick: () => {},
-      editableFields: editableFields as EditableFieldDefinition<IDrawerContentDetail>[],
+      editableFields: editableFields as IEditableField<IBaseRowData>[],
     },
     onDrillDownClick: () => {},
     ...tableEditorPropsForITable,
   }
 }
 
-const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawerContentDetail>) => {
+const DrawerListContainer = (args: IDrawerList<ITask>) => {
   const [listDataMap, setListDataMap] = useState<Map<string, ITask[]>>(createInitialMap())
-  const [nextIdCounter, setNextIdCounter] = useState(1)
-  const [currentDetail, setCurrentDetail] = useState<IDrawerDetail | null>(null)
+  const [currentDetail, setCurrentDetail] = useState<IDrawerDetail<ITask> | null>(null)
 
-  // 編集レコードで確定ボタンを押下した時のアクション
+  /**
+   * 編集レコードで確定ボタンを押下した時のアクション
+   */
   const mockOnAddRow = useCallback(
-    async (newRecord: INewRecodes, parentId: string) => {
+    async (newRecord: INewRecord, parentId: string) => {
       console.log(`Storybook: 新規レコードを保存モック (parentId: ${parentId}):`, newRecord)
       await new Promise((resolve) => setTimeout(resolve, 500))
 
-      const newId = `task-new-${nextIdCounter}`
-      setNextIdCounter((prev) => prev + 1)
-
+      const newId = crypto.createHash("md5").update(Math.random().toString()).digest("hex") // 本来はRDSのユニークID
       const newFullTask: ITask = {
         id: newId,
         ...newRecord,
@@ -150,7 +162,7 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
             ...prevDetail,
             tableContent: {
               ...prevDetail.tableContent,
-              tableBodyList: newMapData.get(parentId) || prevDetail.tableContent.tableBodyList,
+              tableBodyList: updatedList,
             },
           }
         })
@@ -159,7 +171,7 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
       })
       console.log(`新しいタスク: ${newRecord.taskName} (${newId}) をリストに追加しました`)
     },
-    [nextIdCounter, currentDetail, setCurrentDetail]
+    [currentDetail, setCurrentDetail, setListDataMap]
   )
 
   // レコード追加に必要なオブジェクト
@@ -168,15 +180,17 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
     canAddRow: true,
   }
 
-  // 各レコードの詳細ボタンから次に表示するリストを表示する
+  /**
+   * 各レコードの詳細ボタンから次に表示するリストを表示する
+   */
   const mockFetchDetail = useCallback(
-    async (item: IDrawerContentDetail): Promise<IDrawerDetail> => {
+    async (item: ITask): Promise<IDrawerDetail<ITask>> => {
       // APIの待ち時間を模倣
       await new Promise((resolve) => setTimeout(resolve, Math.random() * 500 + 300))
       console.log(`* get record data. (id: ${item.id})`)
       const parentId = item.id
       const taskData = listDataMap.get(parentId)
-      const onAddRowForThisLevel = (newRecord: INewRecodes) => mockOnAddRow(newRecord, parentId)
+      const onAddRowForThisLevel = (newRecord: INewRecord) => mockOnAddRow(newRecord, parentId)
       if (taskData) {
         return buildDetail(parentId, item, taskData, taskEditableFields, onAddRowForThisLevel)
       }
@@ -196,7 +210,7 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
   }
 
   return (
-    <DrawerList
+    <DrawerList<ITask>
       {...args}
       drawerContent={masterTableProps}
       currentDetail={currentDetail}
@@ -208,14 +222,14 @@ const DrawerListContainer = (args: JSX.IntrinsicAttributes & IDrawerList<IDrawer
 
 const meta: Meta<typeof DrawerList> = {
   title: "Organisms/DrawerList (Drill Down)",
-  component: DrawerListContainer as any,
+  component: DrawerListContainer,
   tags: ["autodocs"],
   args: {
     drawerContent: {
-      tableHeader: { id: "", taskName: "サブタスク名", status: "状態" },
+      tableHeader: tableHeader,
       tableBodyList: createInitialMap().get("1") || [],
       handleRowClick: () => alert("click zoom!"),
-      editableFields: taskEditableFields as EditableFieldDefinition<IDrawerContentDetail>[],
+      editableFields: taskEditableFields as IEditableField<IBaseRowData>[],
     },
     fetchDetailData: () => Promise.resolve({} as IDrawerDetail),
   },

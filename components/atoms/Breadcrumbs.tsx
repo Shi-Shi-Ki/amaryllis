@@ -1,12 +1,16 @@
 import React from "react"
 import { IDrawerDetail } from "@/components/organisms/DrawerDetail"
+import { IBaseRowData } from "@/utils/CommonTypes"
 
-interface IBreadcrumbs {
-  history: IDrawerDetail[]
+interface IBreadcrumbs<T extends IBaseRowData> {
+  history: IDrawerDetail<T>[]
   onNavigate: (index: number) => void
 }
 
-const Breadcrumbs = ({ history, onNavigate }: IBreadcrumbs): React.JSX.Element => {
+const Breadcrumbs = <T extends IBaseRowData>({
+  history,
+  onNavigate,
+}: IBreadcrumbs<T>): React.JSX.Element => {
   return (
     <div className="text-sm breadcrumbs">
       <ul>

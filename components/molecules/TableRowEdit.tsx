@@ -1,12 +1,11 @@
 import { useCallback } from "react"
-import * as CommonTypes from "@/utils/CommonTypes"
+import { ColorType, SizeType, IBaseRowData, INewRecord } from "@/utils/CommonTypes"
 import { useForm, RegisterOptions, SubmitHandler } from "react-hook-form"
-import { IDrawerContentDetail, INewRecodes } from "./Table"
 import TextField, { TextFieldColor } from "@/components/atoms/TextField"
 
 type DynamicFormInput = Record<string, string>
 
-export interface EditableFieldDefinition<T extends IDrawerContentDetail> {
+export interface IEditableField<T extends IBaseRowData> {
   // Tは行データ型 (ITaskなど)。KはTのキー
   // ここのTは不変として扱われるため、呼び元で型アサーションする必要がある
   key: keyof T
@@ -18,20 +17,20 @@ export interface EditableFieldDefinition<T extends IDrawerContentDetail> {
   defaultValue?: any
 }
 
-interface NewRowEditorProps<T extends IDrawerContentDetail> {
+interface NewRowEditorProps<T extends IBaseRowData> {
   // テーブルのヘッダー情報（カラム名と表示名）
-  tableHeader: Record<string, string>
+  tableHeader: Record<keyof T, string>
   // 確定ボタン押下時に、編集済みデータを親に渡すコールバック
-  onConfirm: (newRecord: INewRecodes) => Promise<void>
+  onConfirm: (newRecord: INewRecord) => Promise<void>
   // 取消ボタン押下時に、編集状態を終了するコールバック
   onCancel: () => void
   // 親の保存処理が実行中の場合
   isSaving: boolean
   // 編集フィールド
-  editableFields: EditableFieldDefinition<T>[]
+  editableFields: IEditableField<T>[]
 }
 
-function TableRowEdit<T extends IDrawerContentDetail>({
+function TableRowEdit<T extends IBaseRowData>({
   tableHeader,
   onConfirm,
   onCancel,
@@ -70,7 +69,7 @@ function TableRowEdit<T extends IDrawerContentDetail>({
           ;(acc as any)[key] = field.defaultValue
         }
         return acc
-      }, {} as INewRecodes)
+      }, {} as INewRecord)
 
       // 2. 親の保存処理を呼び出す
       await onConfirm(fullNewRecord)
@@ -86,9 +85,7 @@ function TableRowEdit<T extends IDrawerContentDetail>({
         // 編集可能なフィールドで、かつ定義が存在する場合
         const isEditable = fieldDef?.isEditable && fieldDef.key === key
         const hasError = errors[key as string]
-        const errorColor: TextFieldColor = hasError
-          ? CommonTypes.ColorType.SECONDARY
-          : CommonTypes.ColorType.PRIMARY
+        const errorColor: TextFieldColor = hasError ? ColorType.SECONDARY : ColorType.PRIMARY
 
         // 最初の列: 確定/取消ボタン (Zoomアイコンの場所)
         if (index === 0) {
@@ -117,8 +114,8 @@ function TableRowEdit<T extends IDrawerContentDetail>({
               <TextField
                 register={register(key as string, fieldDef!.validationRules)}
                 colorType={errorColor}
-                componentSizeType={CommonTypes.SizeType.SMALL}
-                widthSizeType={CommonTypes.SizeType.LARGE}
+                componentSizeType={SizeType.SMALL}
+                widthSizeType={SizeType.LARGE}
                 placeholder={tableHeader[key]}
               />
               {hasError && (

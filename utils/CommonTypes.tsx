@@ -116,3 +116,16 @@ export const isIncludesType = <T extends Record<string, string>, K extends T[key
 ): value is K => {
   return Object.values(obj).includes(value as K)
 }
+
+/**
+ * データ要素の共通IF
+ */
+export interface IBaseRowData {
+  id: string
+  [key: string]: any // 新規追加時の柔軟性のためのインデックスシグネチャ
+}
+
+/**
+ * フォーム入力などで使われる、ID付与前の生データ
+ */
+export type INewRecord = Omit<IBaseRowData, "id"> & { id?: string }
