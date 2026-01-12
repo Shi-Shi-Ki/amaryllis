@@ -1,9 +1,9 @@
 import React from "react"
 import Card, { ICard } from "@/components/molecules/Card"
-import Table, { ITable } from "@/components/molecules/Table"
+import Table, { IOnAddRow, ITable } from "@/components/molecules/Table"
 import { IEditableField } from "@/components/molecules/TableRowEdit"
-import { IOnAddRow } from "@/stories/components/organisms/DrawerList.stories"
 import { IBaseRowData } from "@/utils/CommonTypes"
+import { ColumnRenderers } from "@/components/organisms/DrawerList"
 
 export interface IDrawerDetail<T extends IBaseRowData = IBaseRowData> {
   cardContent: ICard
@@ -13,6 +13,7 @@ export interface IDrawerDetail<T extends IBaseRowData = IBaseRowData> {
   isLoading?: boolean
   onAddRow?: IOnAddRow
   canAddRow?: boolean
+  columnRenderers?: ColumnRenderers<T>
 }
 
 const DrawerDetail = <T extends IBaseRowData>({
@@ -23,6 +24,7 @@ const DrawerDetail = <T extends IBaseRowData>({
   isLoading = false,
   onAddRow,
   canAddRow = true,
+  columnRenderers,
 }: IDrawerDetail<T>) => {
   const detailCardProps: ICard = {
     ...cardContent,
@@ -36,6 +38,7 @@ const DrawerDetail = <T extends IBaseRowData>({
     onAddRow: onAddRow,
     editableFields: editableFields,
     canAddRow: canAddRow,
+    columnRenderers,
   }
   console.log("DrawerDetail) detailTableProps: ", detailTableProps)
 

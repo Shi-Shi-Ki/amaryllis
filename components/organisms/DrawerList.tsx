@@ -1,15 +1,20 @@
 import React, { useState, useCallback, useEffect, SetStateAction, Dispatch } from "react"
-import Table, { ITable } from "../molecules/Table"
-import DrawerDetail, { IDrawerDetail } from "./DrawerDetail"
-import Breadcrumbs from "../atoms/Breadcrumbs"
-import { IEditableField } from "../molecules/TableRowEdit"
+import Table, { ITable } from "@/components/molecules/Table"
+import DrawerDetail, { IDrawerDetail } from "@/components/organisms/DrawerDetail"
+import Breadcrumbs from "@/components/atoms/Breadcrumbs"
+import { IEditableField } from "@/components/molecules/TableRowEdit"
 import { IBaseRowData } from "@/utils/CommonTypes"
+
+export type ColumnRenderers<T extends IBaseRowData> = {
+  [K in keyof T]?: (value: T[K], row: T) => React.ReactNode
+}
 
 export interface IDrawerList<T extends IBaseRowData> {
   drawerContent: ITable<T>
   currentDetail: IDrawerDetail<T> | null
   setCurrentDetail: Dispatch<SetStateAction<IDrawerDetail<T> | null>>
   fetchDetailData: (data: T) => Promise<IDrawerDetail<T>>
+  columnRenderers?: ColumnRenderers<T>
 }
 
 function DrawerList<T extends IBaseRowData>({
@@ -17,6 +22,7 @@ function DrawerList<T extends IBaseRowData>({
   currentDetail,
   setCurrentDetail,
   fetchDetailData,
+  columnRenderers,
 }: IDrawerList<T>) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [historyStack, setHistoryStack] = useState<IDrawerDetail<T>[]>([])
@@ -133,6 +139,7 @@ function DrawerList<T extends IBaseRowData>({
               onAddRow={currentDetail.onAddRow ?? drawerContent.onAddRow}
               editableFields={drawerContent.editableFields as IEditableField<IBaseRowData>[]}
               canAddRow={currentDetail.tableContent.canAddRow || drawerContent.canAddRow}
+              columnRenderers={columnRenderers}
             />
           )}
         </div>

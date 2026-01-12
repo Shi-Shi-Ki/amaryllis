@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react"
 import Icon from "@/components/atoms/Icon"
 import TableRowEdit, { IEditableField } from "@/components/molecules/TableRowEdit"
-import { IOnAddRow } from "@/stories/components/organisms/DrawerList.stories"
 import { IBaseRowData, INewRecord } from "@/utils/CommonTypes"
+import { ColumnRenderers } from "@/components/organisms/DrawerList"
+
+export type IOnAddRow = (newRecord: INewRecord) => Promise<void>
 
 export interface ITable<T extends IBaseRowData> {
   tableHeader: Record<keyof T, string>
@@ -12,6 +14,7 @@ export interface ITable<T extends IBaseRowData> {
   onAddRow?: IOnAddRow
   editableFields: IEditableField<T>[]
   canAddRow?: boolean
+  columnRenderers?: ColumnRenderers<T>
 }
 
 function Table<T extends IBaseRowData>({
@@ -22,6 +25,7 @@ function Table<T extends IBaseRowData>({
   onAddRow,
   editableFields,
   canAddRow = true,
+  columnRenderers,
 }: ITable<T>) {
   // 新しいレコードが編集中かどうか
   const [isAdding, setIsAdding] = useState(false)
@@ -29,14 +33,18 @@ function Table<T extends IBaseRowData>({
   const [isSaving, setIsSaving] = useState(false)
 
   const handleStartAdding = useCallback(() => {
-    if (!canAddRow) return
+    if (!canAddRow) {
+      return
+    }
     console.log("handleStartAdding) editableFields:", editableFields)
     setIsAdding(true)
-  }, [canAddRow])
+  }, [canAddRow, setIsAdding])
 
   const handleConfirmAdd = useCallback(
     async (newRecordData: INewRecord) => {
-      if (!onAddRow) return
+      if (!onAddRow) {
+        return
+      }
 
       setIsSaving(true)
       try {
@@ -48,7 +56,7 @@ function Table<T extends IBaseRowData>({
         setIsSaving(false)
       }
     },
-    [onAddRow]
+    [onAddRow, setIsSaving, setIsAdding]
   )
   console.log("Table) editableFields:", editableFields)
 
@@ -95,7 +103,9 @@ function Table<T extends IBaseRowData>({
                     </th>
                   )
                 }
-                return <td key={key}>{item[key]}</td>
+                const renderer = columnRenderers?.[key as keyof T]
+                const cellValue = item[key as keyof T]
+                return <td key={key}>{renderer ? renderer(cellValue, item) : item[key]}</td>
               })}
             </tr>
           ))}
