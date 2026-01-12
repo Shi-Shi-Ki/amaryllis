@@ -38,7 +38,7 @@ function Table<T extends IBaseRowData>({
     }
     console.log("handleStartAdding) editableFields:", editableFields)
     setIsAdding(true)
-  }, [canAddRow, setIsAdding])
+  }, [canAddRow, editableFields, setIsAdding])
 
   const handleConfirmAdd = useCallback(
     async (newRecordData: INewRecord) => {

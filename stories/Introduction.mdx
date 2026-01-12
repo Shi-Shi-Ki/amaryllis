@@ -1,230 +1,58 @@
-import { Meta } from '@storybook/blocks';
-import Image from 'next/image';
+import { Meta } from "@storybook/blocks";
 
-import Code from './assets/code-brackets.svg';
-import Colors from './assets/colors.svg';
-import Comments from './assets/comments.svg';
-import Direction from './assets/direction.svg';
-import Flow from './assets/flow.svg';
-import Plugin from './assets/plugin.svg';
-import Repo from './assets/repo.svg';
-import StackAlt from './assets/stackalt.svg';
+<Meta title="Components/Introduction" />
 
-<Meta title="Example/Introduction" />
+# 🧑‍🍳 Portfolio: Next.js & TypeScript Component Collection
 
-<style>
-  {`
-    .subheading {
-      --mediumdark: '#999999';
-      font-weight: 700;
-      font-size: 13px;
-      color: #999;
-      letter-spacing: 6px;
-      line-height: 24px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      margin-top: 40px;
-    }
+### 概要
 
-    .link-list {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr 1fr;
-      row-gap: 10px;
-    }
+バックエンドエンジニア（経験10年以上）が、モダンフロントエンド技術を体系的に習得し、フルスタックな課題解決力を高めるために構築している個人プロジェクトです。  
+単なるUIの実装だけでなく、**Atomic Designに基づく設計**や、**保守性の高いコンポーネント管理**の実践を目的としています。
 
-    @media (min-width: 620px) {
-      .link-list {
-        row-gap: 20px;
-        column-gap: 20px;
-        grid-template-columns: 1fr 1fr;
-      }
-    }
+---
 
-    @media all and (-ms-high-contrast:none) {
-    .link-list {
-        display: -ms-grid;
-        -ms-grid-columns: 1fr 1fr;
-        -ms-grid-rows: 1fr 1fr;
-      }
-    }
+### 🛠 技術スタック (Tech Stack)
 
-    .link-item {
-      display: block;
-      padding: 20px;
-      border: 1px solid #00000010;
-      border-radius: 5px;
-      transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
-      color: #333333;
-      display: flex;
-      align-items: flex-start;
-    }
+- **Framework:** Next.js(App Router) v15.3
+- **Language:** TypeScript v5.8
+- **Runtime:** Node.js v22.15
+- **UI Library:** daisyUI v5.0 / Tailwind CSS v4.1
+- **Design Pattern:** Atomic Design
+- **CI/CD:** Chromatic
 
-    .link-item:hover {
-      border-color: #1EA7FD50;
-      transform: translate3d(0, -3px, 0);
-      box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
-    }
+---
 
-    .link-item:active {
-      border-color: #1EA7FD;
-      transform: translate3d(0, 0, 0);
-    }
+### 🔍 見どころ (Highlights)
 
-    .link-item strong {
-      font-weight: 700;
-      display: block;
-      margin-bottom: 2px;
-    }
+このStorybookの中で、特に技術的な挑戦をしているコンポーネントです。左側のサイドバーから選択してご覧ください。
 
-    .link-item-img-wrapper {
-      height: 40px;
-      width: 40px;
-      margin-right: 15px;
-      flex: none;
-    }
+#### 1. 階層型データ管理 UI
 
-    .link-item span,
-    .link-item p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 20px;
-    }
+**👉 Path: `Organisms` > `DrawerList (Drill Down)`**
 
-    .tip {
-      display: inline-block;
-      border-radius: 1em;
-      font-size: 11px;
-      line-height: 12px;
-      font-weight: 700;
-      background: #E7FDD8;
-      color: #66BF3C;
-      padding: 4px 12px;
-      margin-right: 10px;
-      vertical-align: top;
-    }
+Asanaのような「タスク詳細表示」と「無限階層（ドリルダウン）」を持つリストUIです。
 
-    .tip-wrapper {
-      font-size: 13px;
-      line-height: 20px;
-      margin-top: 40px;
-      margin-bottom: 40px;
-    }
+- **複雑な状態管理:** 親子関係を持つデータの受け渡しと表示制御
+- **再帰的UI:** 深さが不定なデータ構造に対するコンポーネント設計
+- **実装力:** とある商用ToDoアプリケーションを模倣してNext.jsで再現
 
-    .tip-wrapper code {
-      font-size: 12px;
-      display: inline-block;
-    }
-  `}
-</style>
+#### 2. 設計思想 (Atomic Design)
 
-# Welcome to Storybook
+**👉 Path: `Atoms`, `Molecules`, `Organisms`**
 
-Storybook helps you build UI components in isolation from your app's business logic, data, and context.
-That makes it easy to develop hard-to-reach states. Save these UI states as **stories** to revisit during development, testing, or QA.
+再利用性と堅牢性を意識し、粒度に応じたディレクトリ構成を行っています。
 
-Browse example stories now by navigating to them in the sidebar.
-View their code in the `stories` directory to learn how they work.
-We recommend building UIs with a [**component-driven**](https://componentdriven.org) process starting with atomic components and ending with pages.
+- **Atoms:** ボタン、入力フォームなどの最小単位
+- **Molecules:** 検索フォームやカードなど、機能を持つ単位
+- **Organisms:** テーブルやカードなどを組み合わせた機能を持つ単位
 
-<div className="subheading">Configure</div>
+---
 
-<div className="link-list">
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/addons/addon-types"
-    target="_blank"
-  >
-    <div className="link-item-img-wrapper">
-      <Image src={Plugin} alt="plugin" />
-    </div>
-    <span>
-      <strong>Presets for popular tools</strong>
-      Easy setup for TypeScript, SCSS and more.
-    </span>
-  </a>
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/configure/webpack"
-    target="_blank"
-  >
-    <div className="link-item-img-wrapper">
-      <Image src={StackAlt} alt="Build" />
-    </div>
-    <span>
-      <strong>Build configuration</strong>
-      How to customize webpack and Babel
-    </span>
-  </a>
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/configure/styling-and-css"
-    target="_blank"
-  >
-    <div className="link-item-img-wrapper">
-      <Image src={Colors} alt="colors" />
-    </div>
-    <span>
-      <strong>Styling</strong>
-      How to load and configure CSS libraries
-    </span>
-  </a>
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/get-started/setup#configure-storybook-for-your-stack"
-    target="_blank"
-  >
-    <div className="link-item-img-wrapper">
-      <Image src={Flow} alt="flow" />
-    </div>
-    <span>
-      <strong>Data</strong>
-      Providers and mocking for data libraries
-    </span>
-  </a>
-</div>
+### 👨‍💻 Author
 
-<div className="subheading">Learn</div>
+**Corporate Engineer / Full-stack Engineer**
+物理層からアプリケーション層まで、組織の課題を技術で解決する「街の電気屋さん」を目指しています。
 
-<div className="link-list">
-  <a className="link-item" href="https://storybook.js.org/docs" target="_blank">
-    <div className="link-item-img-wrapper">
-      <Image src={Repo} alt="repo" />
-    </div>
-    <span>
-      <strong>Storybook documentation</strong>
-      Configure, customize, and extend
-    </span>
-  </a>
-  <a className="link-item" href="https://storybook.js.org/tutorials/" target="_blank">
-    <div className="link-item-img-wrapper">
-      <Image src={Direction} alt="direction" />
-    </div>
-    <span>
-      <strong>In-depth guides</strong>
-      Best practices from leading teams
-    </span>
-  </a>
-  <a className="link-item" href="https://github.com/storybookjs/storybook" target="_blank">
-    <div className="link-item-img-wrapper">
-      <Image src={Code} alt="code" />
-    </div>
-    <span>
-      <strong>GitHub project</strong>
-      View the source and add issues
-    </span>
-  </a>
-  <a className="link-item" href="https://discord.gg/storybook" target="_blank">
-    <div className="link-item-img-wrapper">
-      <Image src={Comments} alt="comments" />
-    </div>
-    <span>
-      <strong>Discord chat</strong>
-      Chat with maintainers and the community
-    </span>
-  </a>
-</div>
-
-<div className="tip-wrapper">
-  <span className="tip">Tip</span>Edit the Markdown in <code>stories/Introduction.mdx</code>
-</div>
+- **Backend:** PHP, Go (10+ years)
+- **Infrastructure:** AWS, Terraform, Docker (7+ years)
+- **Frontend:** Next.js, TypeScript (Learning & Building)

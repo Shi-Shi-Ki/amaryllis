@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import DrawerList, { ColumnRenderers, IDrawerList } from "@/components/organisms/DrawerList"
 import { ITable } from "@/components/molecules/Table"
 import { IDrawerDetail } from "@/components/organisms/DrawerDetail"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useState } from "react"
 import { IEditableField } from "@/components/molecules/TableRowEdit"
 import crypto from "crypto"
 import CheckBox from "@/components/atoms/CheckBox"
@@ -313,7 +313,7 @@ const DrawerListContainer = (args: IDrawerList<ITask>) => {
 }
 
 const meta: Meta<typeof DrawerList> = {
-  title: "Organisms/DrawerList (Drill Down)",
+  title: "components/organisms/DrawerList (Drill Down)",
   component: DrawerListContainer,
   tags: ["autodocs"],
   args: {
@@ -339,8 +339,3 @@ export default meta
 type Story = StoryObj<typeof DrawerList>
 
 export const Default: Story = {}
-
-export const OpenWithInitialData: Story = {
-  name: "開いた状態で表示",
-  // todo
-}
