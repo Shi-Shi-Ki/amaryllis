@@ -1,0 +1,58 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Components/Introduction" />
+
+# 🧑‍🍳 Portfolio: Next.js & TypeScript Component Collection
+
+### 概要
+
+バックエンドエンジニア（経験10年以上）が、モダンフロントエンド技術を体系的に習得し、フルスタックな課題解決力を高めるために構築している個人プロジェクトです。  
+単なるUIの実装だけでなく、**Atomic Designに基づく設計**や、**保守性の高いコンポーネント管理**の実践を目的としています。
+
+---
+
+### 🛠 技術スタック (Tech Stack)
+
+- **Framework:** Next.js(App Router) v15.3
+- **Language:** TypeScript v5.8
+- **Runtime:** Node.js v22.15
+- **UI Library:** daisyUI v5.0 / Tailwind CSS v4.1
+- **Design Pattern:** Atomic Design
+- **CI/CD:** Chromatic
+
+---
+
+### 🔍 見どころ (Highlights)
+
+このStorybookの中で、特に技術的な挑戦をしているコンポーネントです。左側のサイドバーから選択してご覧ください。
+
+#### 1. 階層型データ管理 UI
+
+**👉 Path: `Organisms` > `DrawerList (Drill Down)`**
+
+Asanaのような「タスク詳細表示」と「無限階層（ドリルダウン）」を持つリストUIです。
+
+- **複雑な状態管理:** 親子関係を持つデータの受け渡しと表示制御
+- **再帰的UI:** 深さが不定なデータ構造に対するコンポーネント設計
+- **実装力:** とある商用ToDoアプリケーションを模倣してNext.jsで再現
+
+#### 2. 設計思想 (Atomic Design)
+
+**👉 Path: `Atoms`, `Molecules`, `Organisms`**
+
+再利用性と堅牢性を意識し、粒度に応じたディレクトリ構成を行っています。
+
+- **Atoms:** ボタン、入力フォームなどの最小単位
+- **Molecules:** 検索フォームやカードなど、機能を持つ単位
+- **Organisms:** テーブルやカードなどを組み合わせた機能を持つ単位
+
+---
+
+### 👨‍💻 Author
+
+**Corporate Engineer / Full-stack Engineer**
+物理層からアプリケーション層まで、組織の課題を技術で解決する「街の電気屋さん」を目指しています。
+
+- **Backend:** PHP, Go (10+ years)
+- **Infrastructure:** AWS, Terraform, Docker (7+ years)
+- **Frontend:** Next.js, TypeScript (Learning & Building)

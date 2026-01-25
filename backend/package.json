@@ -1,0 +1,38 @@
+{
+  "name": "@amaryllis/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch app/index.ts",
+    "build": "tsc",
+    "start": "node dist/app/index.js",
+    "docker:ps": "docker compose ps",
+    "docker:up": "docker compose up -d",
+    "docker:stop": "docker compose stop",
+    "docker:db": "docker compose exec db bash",
+    "docker:kvs": "docker compose exec kvs sh",
+    "db:gen": "drizzle-kit generate",
+    "db:mig": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.19.9",
+    "@hono/trpc-server": "^0.4.2",
+    "@hono/zod-validator": "^0.7.6",
+    "@trpc/server": "^11.8.1",
+    "drizzle-orm": "^0.45.1",
+    "mysql2": "^3.16.1",
+    "hono": "^4.11.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "ts-pattern": "^5.9.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "eslint": "^9.39.2",
+    "@types/node": "^24.3.0",
+    "drizzle-kit": "^0.31.8",
+    "dotenv": "^17.2.3",
+    "vitest": "^4.0.18"
+  }
+}
